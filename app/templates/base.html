@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> Digital Resume | {% block title %} {% endblock %}</title>
+    <meta name="author" content="Something">
+    <link rel="canonical" href=""/>
+    <link rel="home" href=""/>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <link rel="shortcut icon" type="image/x-icon" href="images/icon.jpg">
+    <link rel="apple-touch-icon" type="image/jpg" href="images/icon.jpg">
+
+    <!-- ================================
+    Start CSS
+    ================================= -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7.0.5/swiper-bundle.min.css">
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- ================================
+    End CSS
+    ================================= -->
+
+  </head>
+
+  <body>
+    
+    {% block content %} {% endblock content %}
+
+    <!-- ================================
+    Start Navigation Bar
+    ================================= -->
+    {% include 'inc/_navbar.html' %}
+    <!-- ================================
+    End Navigation Bar
+    ================================= -->
+
+    <!-- ================================
+    Start Footer
+    ================================= -->
+    {% include 'inc/_footer.html' %}
+    <!-- ================================
+    End Footer
+     ================================= -->
+
+ <!-- ================================
+  Start Scripts
+  ================================= -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/swiper@7.0.5/swiper-bundle.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <!-- ================================
+  End Scripts
+  ================================= -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,7 @@
+from flask import render_template
+
 from app import app
 
-
-@app.route("/")
+@app.route('/')
 def index():
-    return "<h1>Flask</h1>"
+    return render_template('resume/index.html')
