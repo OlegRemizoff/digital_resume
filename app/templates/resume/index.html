@@ -66,9 +66,14 @@
               <h4 class="smTitle pb-3">Coding Skills</h4>
               <div class="progressCol">
                 <div class="progressCard">
-                  {% for s in skill %}
+                  {% for s in skill|sort(attribute='position') %}
                   <div class="progressCol">
-                    <span class="progressLbl">{{ s.name }}</span>
+                    <span class="progressLbl">
+                      
+                      {{ s.name }}
+
+                      <!-- {% filter random  %}{{ s.name }}{% endfilter %} -->
+                    </span>
                     <div class="row g-2 align-items-center">
                       <div class="col">
                         <div class="progress progressStyle">
