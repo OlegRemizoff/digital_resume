@@ -18,11 +18,15 @@ app = create_app()
 db = SQLAlchemy(app)
 db.init_app(app)
 
+
 from app.models import Skill
-admin = Admin(app, name='Resume', template_mode='bootstrap4')
+from app.views import *
+
+admin = Admin(app, name='Resume', template_mode='bootstrap4', index_view=DashboardView(), endpoint='admin')
 admin.add_view(ModelView(Skill, db.session, name="Навыки"))
 
-from app.views import *
+
+
 
 
 
