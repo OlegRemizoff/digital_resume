@@ -1,5 +1,5 @@
 from app import db
-from flask_security import Security, SQLAlchemySessionUserDatastore, UserMixin, RoleMixin, login_required
+from flask_security import  UserMixin, RoleMixin
 
 
 class Skill(db.Model):
