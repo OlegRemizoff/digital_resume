@@ -17,7 +17,7 @@
                 <ul>
                   <li><a href="{{ url_for('index') }}">Home</a></li>
                   <li><a href="#">Portfolio</a></li>
-                  <li><a href="#">Blog</a></li>
+                  <li><a href="{{ url_for('blog') }}">Blog</a></li>
                   <li><a href="#">Contact</a></li>
                   {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('security.logout') }}">Logout</a></li>

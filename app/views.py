@@ -5,8 +5,11 @@ from flask_security import login_required
 
 from app import app
 
+
+
+
+
 class DashboardView(AdminIndexView): 
-	
 	@expose('/')
 	@login_required
 	def index(self): 
@@ -17,3 +20,14 @@ class DashboardView(AdminIndexView):
 def index():
     skill = Skill.query.all()
     return render_template('resume/index.html', skill=skill)
+
+
+@app.route('/blog/')
+def blog():
+	return render_template('blog/blog.html')
+
+
+
+
+
+	
