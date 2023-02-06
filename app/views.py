@@ -28,7 +28,19 @@ def blog():
 	return render_template('blog/blog.html', posts=posts)
 
 
+@app.route('/<slug>')
+def post_detail(slug):
+	post = Post.query.filter(Post.slug == slug).first()
+	date = post.created.strftime("%d-%m-%Y  %H:%m %p")
 
+	context = {
+		'title': post.title,
+		'body': post.body,
+		'date': date,
+	}
+	title = post.title
 
+	return render_template('blog/blog_detail.html', context=context, title=title)
+	
 
 	
