@@ -1,11 +1,11 @@
 from flask import render_template, request
 from app.models import Skill, Post
+from app.forms import PostForm
 from flask_admin import  AdminIndexView, expose
 from flask_security import login_required
 
+
 from app import app
-
-
 
 
 
@@ -14,6 +14,12 @@ class DashboardView(AdminIndexView):
 	@login_required
 	def index(self): 
 	   return self.render('admin/dashboard.html')
+
+
+@app.route('/blog/create')
+def create_post():
+	form = PostForm()
+	return render_template('blog/create_post.html', form=form)
 
 
 @app.route('/') 

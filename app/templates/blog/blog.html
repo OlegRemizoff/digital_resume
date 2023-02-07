@@ -10,11 +10,12 @@
         <div class="row g-4 g-md-3  align-items-center">
           <div class="col-md-6">
             <div class="bannerContent">
-              <h1 class="xlTitle pb-md-3">See my recent blogs below</h1>
+              <h1 class="xlTitle pb-md-3">See my recent blogs below<br>
+                <a href="{{ url_for('create_post') }}"> Add new +</a></h1>
             </div>
             <form class="d-flex" role="search", method="GET">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q" value="{{ request.args.get('q', '') }}">
-              <button class="btn btn-outline-warning" type="submit">Search</button>
+              <button class="btn btnOutline" type="submit">Search</button>
             </form>
           </div>
         </div>
