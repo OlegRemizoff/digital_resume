@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from app.models import Skill, Post
 from flask_admin import  AdminIndexView, expose
 from flask_security import login_required
@@ -24,7 +24,11 @@ def index():
 
 @app.route('/blog/')
 def blog():
-	posts = Post.query.all()
+	q = request.args.get('q')
+	if q:
+		posts = Post.query.filter(Post.title.contains(q) | Post.body.contains(q)).all()	 
+	else:		
+		posts = Post.query.all()
 	return render_template('blog/blog.html', posts=posts)
 
 
