@@ -3,12 +3,11 @@ from app.models import Skill, Post
 from app.forms import PostForm
 from flask_admin import  AdminIndexView, expose
 from flask_security import login_required
-
-
 from app import app, db
 
 
 
+### Админка ###
 class DashboardView(AdminIndexView): 
 	@expose('/')
 	@login_required
@@ -16,6 +15,7 @@ class DashboardView(AdminIndexView):
 	   return self.render('admin/dashboard.html')
 
 
+### Создать пост ###
 @app.route('/blog/create', methods=['GET', 'POST'])
 def create_post():
 	if request.method == 'POST':
@@ -33,12 +33,27 @@ def create_post():
 	return render_template('blog/create_post.html', form=form)
 
 
+### Редактировать пост ###
+@app.route('/blog/<slug>/edit/', methods=['GET', 'POST'])
+def edit_post(slug):
+		post = Post.query.filter(Post.slug==slug).first()
+		if request.method == "POST":
+			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля были на пустоту
+			form.populate_obj(post) #Заполняет атрибуты переданного объекта нов данными из полей формы.
+			db.session.commit()
+			return redirect(url_for('post_detail', slug=post.slug))
+    	
+		form = PostForm(obj=post)
+		return render_template('blog/edit_post.html', post=post, form=form)
+
+### Список навыков ###
 @app.route('/') 
 def index():
     skill = Skill.query.all()
     return render_template('resume/index.html', skill=skill)
 
 
+### Список постов ###
 @app.route('/blog/')
 def blog():
 	q = request.args.get('q')
@@ -49,7 +64,8 @@ def blog():
 	return render_template('blog/blog.html', posts=posts)
 
 
-@app.route('/<slug>')
+### Обзор поста ###
+@app.route('/blog/<slug>')
 def post_detail(slug):
 	post = Post.query.filter(Post.slug == slug).first()
 	date = post.created.strftime("%d-%m-%Y  %H:%m %p")
@@ -58,10 +74,11 @@ def post_detail(slug):
 		'title': post.title,
 		'body': post.body,
 		'date': date,
+		'post': post
 	}
 	title = post.title
 
-	return render_template('blog/blog_detail.html', context=context, title=title)
+	return render_template('blog/post_detail.html', context=context, title=title)
 	
 
 	

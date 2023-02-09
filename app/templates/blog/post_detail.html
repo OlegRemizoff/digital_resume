@@ -11,6 +11,8 @@
           <div class="col-md-6">
             <div class="bannerContent">
               <h1 class="xlTitle pb-md-3">{{ context.title }}</h1>
+                    <a title="Edit" href="{{ url_for('edit_post', slug=context.post.slug) }}">
+                    <img src="{{ url_for('static', filename='images/edit.png') }}" alt="..." style="width: 48px; margin-bottom: 10px;">Link</a>
             </div>
           </div>
         </div>
@@ -51,3 +53,7 @@
 
 
 {% endblock content %}
+
+
+
+<!-- <a href="{{ url_for('edit_post', slug=post.slug) }}"> -->
