@@ -38,7 +38,7 @@ def create_post():
 def edit_post(slug):
 		post = Post.query.filter(Post.slug==slug).first()
 		if request.method == "POST":
-			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля были на пустоту
+			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
 			form.populate_obj(post) #Заполняет атрибуты переданного объекта нов данными из полей формы.
 			db.session.commit()
 			return redirect(url_for('post_detail', slug=post.slug))
@@ -46,22 +46,27 @@ def edit_post(slug):
 		form = PostForm(obj=post)
 		return render_template('blog/edit_post.html', post=post, form=form)
 
-### Список навыков ###
-@app.route('/') 
-def index():
-    skill = Skill.query.all()
-    return render_template('resume/index.html', skill=skill)
-
 
 ### Список постов ###
 @app.route('/blog/')
 def blog():
-	q = request.args.get('q')
+	q = request.args.get('q')  # ?somethig (q, page) - попадает в args
+
+	page = request.args.get("page")
+	if page and page.isdigit():
+		page = int(page)
+	else:
+		page = 1
+
 	if q:
-		posts = Post.query.filter(Post.title.contains(q) | Post.body.contains(q)).all()	 
-	else:		
-		posts = Post.query.all()
-	return render_template('blog/blog.html', posts=posts)
+		posts = Post.query.filter(Post.title.contains(
+			q) | Post.body.contains(q))  # .all()
+	else:
+		posts = Post.query  # .all()
+
+	pages = posts.paginate(page=page, per_page=3)
+
+	return render_template('blog/blog.html', posts=posts, pages=pages)
 
 
 ### Обзор поста ###
@@ -79,6 +84,11 @@ def post_detail(slug):
 	title = post.title
 
 	return render_template('blog/post_detail.html', context=context, title=title)
-	
 
+
+### Список навыков ###
+@app.route('/') 
+def index():
+    skill = Skill.query.all()
+    return render_template('resume/index.html', skill=skill)
 	

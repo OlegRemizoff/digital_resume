@@ -28,7 +28,7 @@
       <div class="container">
         <div class="portfolioContentMain">
           <div class="row g-3 g-md-4 g-lg-5 portfolioRow">
-            {% for post in posts %}
+            {% for post in pages.items %}
             <div class="col-md-6 pColMain">
               <div class="pCol">
                 <p>{{ post.title }}</p>
@@ -36,13 +36,47 @@
               </div>
             </div>
             {% endfor %}
-
-
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Pagination -->
+      <div class="container">
+        <div class="col-md-3 mx-auto">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                {% if pages.has_prev %}
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+                {% endif %}
+              </li>
+
+              {% for page in pages.iter_pages() %}
+              <li {% if page == pages.page %} class="page-item active" {% endif %} >
+                <a class="page-link" href="./?page={{ page }}">{{ page }}
+                </a></li>
+              {% endfor %}
+              
+              <li class="page-item">
+                {% if pages.has_next %}
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+                {% endif %}
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <!-- Pagination End -->
+      
     </div>
   </section>
+
+
+
 
 {% endblock content %}
