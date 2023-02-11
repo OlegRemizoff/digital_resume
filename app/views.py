@@ -91,4 +91,9 @@ def post_detail(slug):
 def index():
     skill = Skill.query.all()
     return render_template('resume/index.html', skill=skill)
-	
+
+
+### Обратная связь ###
+@app.route('/contact')
+def contact():
+	return render_template('contact.html')
