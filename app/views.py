@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, flash
 from app.models import Skill, Post, Message
 from app.forms import PostForm, ContactForm
 from flask_admin import  AdminIndexView, expose
@@ -97,15 +97,16 @@ def index():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
 	if request.method == "POST":
-		name = request.form['name'] # переменный из class ContactForm()
+		name = request.form['name'] # переменныe из class ContactForm()
 		email = request.form['email']
 		message = request.form['message']
 		try:
 			message = Message(name=name, email=email, message=message)
 			db.session.add(message)
 			db.session.commit()
+			flash('The message has been sent', category="success")
 		except:
-			print("Something wrong!")
+			flash("Something wrong!", category="danger")
 		return redirect(url_for('contact'))
 		
 	form = ContactForm()

@@ -87,7 +87,7 @@ class Message(db.Model):
     __tablename__ = 'message'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=True)
 
     def __repr__(self) -> str:
