@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for, redirect
-from app.models import Skill, Post
-from app.forms import PostForm
+from app.models import Skill, Post, Message
+from app.forms import PostForm, ContactForm
 from flask_admin import  AdminIndexView, expose
 from flask_security import login_required
 from app import app, db
@@ -93,7 +93,24 @@ def index():
     return render_template('resume/index.html', skill=skill)
 
 
-### Обратная связь ###
-@app.route('/contact')
+## Обратная связь ###
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-	return render_template('contact.html')
+	if request.method == "POST":
+
+		name = request.form['Name']
+		email = request.form['Email']
+		message = request.form['Message']
+		try:
+			message = Message(name=name, email=email, message=message)
+			db.session.add(message)
+			db.session.commit()
+		except:
+			print("Something wrong!")
+		return redirect(url_for('contact'))
+
+	form = ContactForm()
+	return render_template('contact.html', form=form)
+
+		
+	# return render_template('contact.html')
