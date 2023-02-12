@@ -1,4 +1,5 @@
 from wtforms import Form, StringField, TextAreaField
+from wtforms.validators import Email
 
 
 class PostForm(Form):
@@ -6,7 +7,7 @@ class PostForm(Form):
     body = TextAreaField('Body')
 
 
-class ContactForm():
+class ContactForm(Form):
     name = StringField('Name')
-    email = StringField('Email')
+    email = StringField('Email', validators=[Email()])
     message = TextAreaField('Message')

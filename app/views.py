@@ -97,10 +97,9 @@ def index():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
 	if request.method == "POST":
-
-		name = request.form['Name']
-		email = request.form['Email']
-		message = request.form['Message']
+		name = request.form['name'] # переменный из class ContactForm()
+		email = request.form['email']
+		message = request.form['message']
 		try:
 			message = Message(name=name, email=email, message=message)
 			db.session.add(message)
@@ -108,9 +107,7 @@ def contact():
 		except:
 			print("Something wrong!")
 		return redirect(url_for('contact'))
-
+		
 	form = ContactForm()
 	return render_template('contact.html', form=form)
 
-		
-	# return render_template('contact.html')

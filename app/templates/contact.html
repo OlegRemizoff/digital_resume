@@ -21,20 +21,33 @@
     <section>
       <div class="lightBg">
         <div class="container">
-            <form id="contactForm">
-                <label for="name">Name</label>
+            <form action="{{ url_for('contact') }}" method="POST" id="contactForm">
+              <p>{{ form.name.label() }} {{ form.name  }}</p>
+              <p>{{ form.email.label() }} {{ form.email }}</p>
+              <p>{{ form.message.label() }} {{ form.message }}</p>
+                <!-- <label for="name">Name</label>
                 <input type="text" id="name" name="name" placeholder="Your name..">
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Your email..">
 
                 <label for="subject">Message</label>
-                <textarea id="message" name="message" placeholder="Write something.." rows="6"></textarea>
+                <textarea id="message" name="message" placeholder="Write something.." rows="6"></textarea> -->
 
-                <input class='btn btnPrimary' type="submit" value="Submit">
+                <button type="submit" class="btn btnPrimary">Send</button>
             </form>
         </div>
       </div>
     </section>
 
 {% endblock content %}     
+
+
+
+
+
+
+
+
+
+
