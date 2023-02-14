@@ -11,8 +11,9 @@ from app import app, db
 class DashboardView(AdminIndexView): 
 	@expose('/')
 	@login_required
-	def index(self): 
-	   return self.render('admin/dashboard.html')
+	def index(self):
+		message = Message.query.all()
+		return self.render('admin/dashboard.html', message=message)
 
 
 ### Создать пост ###
