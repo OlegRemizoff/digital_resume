@@ -12,9 +12,39 @@ class DashboardView(AdminIndexView):
 	@expose('/')
 	@login_required
 	def index(self):
-		message = Message.query.all()
-		return self.render('admin/dashboard.html', message=message)
+		message = Message.query #.all()
+		
+		page = request.args.get("page")
+		if page and page.isdigit():
+			page = int(page)
+		else:
+			page = 1
+		pages = message.paginate(page=page, per_page=5)
+		return self.render('admin/dashboard.html', message=message, pages=pages)
+	
 
+
+
+	### Message delete ###
+	@expose('/<int:id>/')
+	@login_required
+	def message_delete(self, id):
+		message = Message.query.filter(Message.id==id).first()
+		db.session.delete(message)
+		db.session.commit()
+		return self.redirect(url_for('index'))
+
+
+
+
+	### Message detail ###
+	# @expose('/<int:id>/')
+	# @login_required
+	# def message_detail(self, id):
+	# 	# return "<h1>Hello: {id}</h1>"
+	# 	message = Message.query.filter(Message.id==id).first()
+	# 	return render_template('admin/message.html', message=message)
+	
 
 ### Создать пост ###
 @app.route('/blog/create', methods=['GET', 'POST'])

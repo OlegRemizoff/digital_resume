@@ -3,6 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='1') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock %}
 
 
@@ -10,21 +11,72 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                {% for msg in message %}
+                {% for msg in pages.items %}
+                 <!-- ранее in message -->
                 <div class="col mb-2"></div>
                     <div class="card">
                         <div class="card-body">
                         <h5 class="card-title">{{ msg.name }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted"><a href="#">{{ msg.email }}</a></h6>
-                        <p class="card-text">{{ msg.message }}</p>
-                        <a href="#" class="card-link">Detail</a>
-                        <a href="#" class="card-link">Drop</a>
+                        <div class="message-item">
+                            <label class="message-title" for="msg{{ msg.id }}">Detail</label>
+                            <input class="message-input" type="checkbox" id="msg{{ msg.id }}">
+                            <div class="message-text">
+                                <div class="card">
+                                    <div class="card-header">
+                                      Цитата
+                                    </div>
+                                    <div class="card-body">
+                                      <blockquote class="blockquote mb-0">
+                                        <p>{{ msg.message }}</p>
+                                        <footer class="blockquote-footer">Кто-то известный в <cite title="Заголовок источника">Заголовке источника</cite></footer>
+                                      </blockquote>
+                                    </div>
+                                  </div>
+                                <!-- <p>{{ msg.message }}</p> -->
+                            </div>
+                            <a href="{{ url_for('admin.message_delete', id=msg.id) }}" class="card-link" style="margin-left: 10px; color: rgb(209, 23, 23);">Delete</a>           
                     </div>
                 </div>
                 {% endfor %}
             </div>   
         </div>
+        <!-- Pagination start -->
+        <div class="container">
+            <div class="col-md-3 mx-auto">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    {% if pages.has_prev %}
+                    <a class="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    {% endif %}
+                  </li>
+    
+                  {% for page in pages.iter_pages() %}
+                  <li {% if page == pages.page %} class="page-item active" {% endif %} >
+                    <a class="page-link" href="./?page={{ page }}">{{ page }}
+                    </a></li>
+                  {% endfor %}
+                  
+                  <li class="page-item">
+                    {% if pages.has_next %}
+                    <a class="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    {% endif %}
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <!-- Pagination End -->
     </div>
+
+
+
+
 {% endblock %}
 
 

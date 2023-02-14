@@ -774,3 +774,44 @@ input[type=text], input[type=email], select, textarea {
   margin-bottom: 16px;
   resize: vertical
 }
+
+
+/* Message */
+
+.message-input {
+  width: 0;
+  height: 0;
+  appearance: none;
+  position: a
+  ;
+
+}
+
+.message-input:checked + .message-text {
+/* Скрытие */
+  display: block;
+}
+
+.message-title {
+  cursor: pointer;
+}
+
+.message-title:hover {
+  transform: scale(1.5);
+  transition: 0.2s;
+}
+
+.message-text {
+  display: none;
+  font-size: 24px;
+  color: #100f0f;
+  padding: 10px 15px;
+
+}
+
+
+
+
+/* border: 1px solid rgb(221, 22, 22);
+margin-bottom: 5px;
+} */
