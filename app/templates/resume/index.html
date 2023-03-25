@@ -16,8 +16,29 @@
             </div>
             <div class="col-md">
               <div class="bannerContent">
-                <h1 class="xlTitle pb-3">Hi, I’m Oleg, <br> a back-end Developer</h1>
-                <p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p>
+                <h1 class="xlTitle pb-3">Hi, I’m Oleg, <br> a <span class="text sec-text">Python</span> <br> back-end Developer</h1>
+                <!-- <p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p> -->
+              </div>
+          
+              <script>
+                  const text = document.querySelector(".sec-text");
+          
+                  const textLoad = () => {
+                      setTimeout(() => {
+                          text.textContent = "Python";
+                      }, 0);
+                      setTimeout(() => {
+                          text.textContent = "Golang";
+                      }, 4000);
+                      // setTimeout(() => {
+                      //     text.textContent = "YouTuber";
+                      // }, 8000);
+                  }
+          
+                  textLoad()
+                  setInterval(textLoad, 8000);
+              </script>
+
                 <div class="bannerBtnCol">
                   <div class="row">
                     <div class="col-auto">

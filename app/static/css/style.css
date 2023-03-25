@@ -815,3 +815,38 @@ input[type=text], input[type=email], select, textarea {
 /* border: 1px solid rgb(221, 22, 22);
 margin-bottom: 5px;
 } */
+
+/* Typewriter*/
+
+.container .text {
+  position: relative;
+  color: #9c07b6;
+  font-size: 36px;
+  font-weight: 600;
+
+}
+
+.container .text.first-text {
+  color: #121111;
+  
+}
+.text.sec-text:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  /*цвет затирания такой как и фон body*/
+  background-color: var(--bs-body-bg); 
+  border-left: 2px solid #0f0f10;/*курсор*/
+  animation: animate 4s steps(12) infinite;
+}
+@keyframes animate {
+  40%, 60% {
+      left:calc(100% + 4px);
+  }
+  100%{
+      left: 0%;
+  }
+}
