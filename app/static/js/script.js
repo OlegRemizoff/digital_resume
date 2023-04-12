@@ -47,3 +47,13 @@ var swiper = new Swiper(".certificatesSlider", {
     },
   },
 });
+
+
+var typed = new Typed(".multiple-text", {
+  strings: ["Python", "Golang"],
+  typeSpeed: 300,
+  backSpeed: 100,
+  backDelay: 1000,
+  loop: true
+
+})

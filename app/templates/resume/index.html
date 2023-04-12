@@ -14,39 +14,86 @@
                 <img src="{{ url_for('static', filename='images/user-img.jpg') }}" alt="...">
               </div>
             </div>
-            <div class="col-md">
-              <div class="bannerContent">
-                <h1 class="xlTitle pb-3">Hi, I’m Oleg, <br> a <span class="text sec-text">Python</span> <br> back-end Developer</h1>
-                <!-- <p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p> -->
-              </div>
-          
-              <script>
-                  const text = document.querySelector(".sec-text");
-          
-                  const textLoad = () => {
-                      setTimeout(() => {
-                          text.textContent = "Python";
-                      }, 0);
-                      setTimeout(() => {
-                          text.textContent = "Golang";
-                      }, 4000);
-                      // setTimeout(() => {
-                      //     text.textContent = "YouTuber";
-                      // }, 8000);
-                  }
-          
-                  textLoad()
-                  setInterval(textLoad, 8000);
-              </script>
+              <div class="col-md">
+                <div class="bannerContent">
+                  <h1 class="xlTitle pb-3">
+                    Hi, I’m Oleg, <br>
+                    a <span class="multiple-text"></span> <br> back-end Developer
+                  </h1>
+
+
+
+                  <!-- <p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p> -->
+                </div>
+
+                <!-- <script>
+                    const text = document.querySelector(".sec-text");
+
+                    const textLoad = () => {
+                        setTimeout(() => {
+                            text.textContent = "Python";
+                        }, 0);
+                        setTimeout(() => {
+                            text.textContent = "Golang";
+                        }, 4000);
+                        // setTimeout(() => {
+                        //     text.textContent = "YouTuber";
+                        // }, 8000);
+                    }
+
+                    textLoad()
+                    setInterval(textLoad, 8000);
+                </script> -->
 
                 <div class="bannerBtnCol">
                   <div class="row">
                     <div class="col-auto">
-                      <a download href="javascript:void(0)" class="btn btnPrimary">Download Resume</a>
+                      <a download href="javascript:void(0)" class="btn btnPrimary" title="not yet written &#128169;">Download CV</a>
                     </div>
+                    <!--Show contacts ================================
+                     ============================================== -->
                     <div class="col-auto">
-                      <a href="contact.html" class="btn btnOutline">Contact</a>
+                      <button type="button" class="btn btnOutline" id="liveToastBtn">Contacts</button>
+    
+                      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                          <div class="toast-header">
+                            <img src="{{ url_for('static', filename='images/contact.png') }}" class="rounded me-2" alt="...">
+                            <strong class="me-auto">Get in touch with me</strong>
+                            <small>Now</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+                          </div>
+                          <div class="toast-body">
+                            <p>
+                              <img src="{{ url_for('static', filename='images/gmail.svg') }}" alt="" style="width: 27px;">
+                              <span class="show-contact">job.rem1zoff@gmail.com</span>
+                            </p>
+                            <p>
+                              <img src="{{ url_for('static', filename='images/telegram.svg') }}" alt=""><span class="show-contact">https://t.me/@rem1zoff_oleg</span>
+                            </p>
+                            <p>
+                              <img src="{{ url_for('static', filename='images/git-logo.png') }}" style="width: 33px;" alt=""><span class="show-contact">https://github.com/OlegRemizoff</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <script>
+                        var now = new Date();
+                        const toastTrigger = document.getElementById('liveToastBtn')
+                        const toastLiveExample = document.getElementById('liveToast')
+                        if (toastTrigger) {
+                          toastTrigger.addEventListener('click', () => {
+                            const toast = new bootstrap.Toast(toastLiveExample)
+    
+                            toast.show()
+                          })
+                        }
+                      </script>
+                      
                     </div>
+                    <!--End contacts ================================
+                    ============================================== -->
                   </div>
                 </div>
               </div>
@@ -65,21 +112,21 @@
                 <h4 class="smTitle pb-3">Key Skills</h4>
                 <div class="keySkillCard">
                   <div class="ksIconCol">
-                    <img src="{{ url_for('static', filename='images/key-skill-icon-1.svg') }}" alt="...">
+                    <img src="{{ url_for('static', filename='images/linux-logo.png') }}" alt="...">
                   </div>
-                  <span class="ksText">Key Skill 1</span>
+                  <span class="ksText">Linux</span>
                 </div>
                 <div class="keySkillCard">
                   <div class="ksIconCol">
-                    <img src="{{ url_for('static', filename='images/key-skill-icon-2.svg') }}" alt="...">
-                  </div>
-                  <span class="ksText">Key Skill 2</span>
+                    <a href="https://github.com/OlegRemizoff"><img src="{{ url_for('static', filename='images/git-logo.png') }}" alt="..." title="Go to GitHub"></a>
+                  </div>     
+                  <span class="ksText">Git</span>
                 </div>
                 <div class="keySkillCard">
                   <div class="ksIconCol">
-                    <img src="{{ url_for('static', filename='images/key-skill-icon-3.svg') }}" alt="...">
+                    <img src="{{ url_for('static', filename='images/docker-logo.png') }}" alt="...">
                   </div>
-                  <span class="ksText">Key Skill 3</span>
+                  <span class="ksText">Docker</span>
                 </div>
               </div>
             </div>
