@@ -11,6 +11,7 @@ class Skill(db.Model):
     name = db.Column(db.String(140))
     score = db.Column(db.Integer)
     position = db.Column(db.Integer)
+    image = db.Column(db.Text, nullable=True)
 
     def __repr__(self) -> str:
         return f'skill_id: {self.id}, name: {self.name}'

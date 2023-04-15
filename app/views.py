@@ -1,9 +1,14 @@
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, Markup
 from app.models import Skill, Post, Message
 from app.forms import PostForm, ContactForm
 from flask_admin import  AdminIndexView, expose
+from flask_admin.contrib.sqla import ModelView
+from flask_admin.form.upload import ImageUploadField
 from flask_security import login_required
 from app import app, db
+import os
+
+file_path = os.path.abspath(os.path.dirname(__name__))
 
 
 
@@ -24,7 +29,6 @@ class DashboardView(AdminIndexView):
 	
 
 
-
 	### Message delete ###
 	@expose('/<int:id>/')
 	@login_required
@@ -35,8 +39,6 @@ class DashboardView(AdminIndexView):
 		return self.redirect(url_for('index'))
 
 
-
-
 	### Message detail ###
 	# @expose('/<int:id>/')
 	# @login_required
@@ -44,7 +46,53 @@ class DashboardView(AdminIndexView):
 	# 	# return "<h1>Hello: {id}</h1>"
 	# 	message = Message.query.filter(Message.id==id).first()
 	# 	return render_template('admin/message.html', message=message)
+
+
+class AdminSkillView(ModelView):
+	form_extra_fields = {
+	'image': ImageUploadField(
+		'',
+		base_path=os.path.join(file_path, 'static/images/'),
+		max_size=(1280, 720, True),
+		thumbnail_size=(25, 25, True),
+	)}
+
+
+
+
+	column_labels = {
+		"name": "Навык",
+		"score": "Уровень",
+		"position": "Позиция",
+		"image": "Изображение",
+	}
+	column_sortable_list = ("name", "score", "position",)
+	column_searchable_list = ('name',)
+	create_modal = True
+	edit_modal = True
+
+	def _list_thumbnail(view, context, model, name):
+		if not model.image:
+			return ""
+		
+		url = url_for('static', filename=os.path.join('images/', model.image))
+		if model.image.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
+			return Markup(f'<img src="{url}" width="100">')
+
+	column_formatters =  {
+		'image': _list_thumbnail	# передаем в поле image нашу функцию
+	}
+
+	def create_form(self, obj=None):
+		return super().create_form(obj)
 	
+	def edit_form(self, obj=None):
+		return super().edit_form(obj)
+
+
+	def __init__(self, session, base_path="/app/static/images", **kwargs):
+		super(AdminSkillView, self).__init__(Skill, session, **kwargs)
+
 
 ### Создать пост ###
 @app.route('/blog/create', methods=['GET', 'POST'])
@@ -143,3 +191,16 @@ def contact():
 	form = ContactForm()
 	return render_template('contact.html', form=form)
 
+
+### Image ###
+# @app.route("/upload", methods=["POST"])
+# def upload_file():
+# 	img = request.file['img']
+
+
+
+
+# <div class="mb-3">
+#   <label for="formFile" class="form-label">Пример ввода файла по умолчанию</label>
+#   <input class="form-control" type="file" id="formFile">
+# </div>
