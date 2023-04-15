@@ -11,6 +11,7 @@ class Skill(db.Model):
     name = db.Column(db.String(140))
     score = db.Column(db.Integer)
     position = db.Column(db.Integer)
+    image = db.Column(db.Text, nullable=True)
 
     def __repr__(self) -> str:
         return f'skill_id: {self.id}, name: {self.name}'
@@ -60,6 +61,8 @@ class Post(db.Model):
     created = db.Column(db.DateTime, default=datetime.now())
     tags = db.relationship('Tag', secondary=post_tags,
                            backref=db.backref('post', lazy='dynamic'))
+    image = db.Column(db.Text, nullable=True)
+    
     def __repr__(self) -> str:
             return f'Post id: {self.id}, title: {self.title}'
 

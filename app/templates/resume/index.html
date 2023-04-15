@@ -136,6 +136,7 @@
                 <div class="progressCard">
                   {% for s in skill|sort(attribute='position') %}
                   <div class="progressCol">
+                    <img src="/static/images/{{ s.image }}" alt="">
                     <span class="progressLbl">
                       
                       {{ s.name }}
