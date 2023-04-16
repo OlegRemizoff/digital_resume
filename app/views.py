@@ -52,9 +52,15 @@ class AdminSkillView(ModelView):
 	form_extra_fields = {
 	'image': ImageUploadField(
 		'',
+<<<<<<< HEAD
 		base_path=os.path.join(file_path, 'app/static/images/'),
 		max_size=(1280, 720, True),
 		thumbnail_size=(100, 100, True),
+=======
+		base_path=os.path.join(file_path, 'static/images/'),
+		max_size=(1280, 720, True),
+		thumbnail_size=(25, 25, True),
+>>>>>>> 6e2bb9db62d3a27c073977f0d9db66b08ac22e2b
 	)}
 
 
@@ -77,7 +83,11 @@ class AdminSkillView(ModelView):
 		
 		url = url_for('static', filename=os.path.join('images/', model.image))
 		if model.image.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
+<<<<<<< HEAD
 			return Markup(f'<img src="{url}" width="35">')
+=======
+			return Markup(f'<img src="{url}" width="100">')
+>>>>>>> 6e2bb9db62d3a27c073977f0d9db66b08ac22e2b
 
 	column_formatters =  {
 		'image': _list_thumbnail	# передаем в поле image нашу функцию
@@ -90,6 +100,7 @@ class AdminSkillView(ModelView):
 		return super().edit_form(obj)
 
 
+<<<<<<< HEAD
 	def __init__(self, session,  **kwargs):
 		super(AdminSkillView, self).__init__(Skill, session, **kwargs)
 
@@ -137,6 +148,11 @@ class AdminPostView(ModelView):
 	def __init__(self, session,  **kwargs):
 		super(AdminPostView, self).__init__(Post, session, **kwargs)
 
+=======
+	def __init__(self, session, base_path="/app/static/images", **kwargs):
+		super(AdminSkillView, self).__init__(Skill, session, **kwargs)
+
+>>>>>>> 6e2bb9db62d3a27c073977f0d9db66b08ac22e2b
 
 ### Создать пост ###
 @app.route('/blog/create', methods=['GET', 'POST'])
