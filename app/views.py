@@ -5,6 +5,7 @@ from flask_admin import  AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.upload import ImageUploadField
 from flask_security import login_required
+from werkzeug.utils import secure_filename
 from app import app, db
 import os
 
@@ -144,8 +145,11 @@ def create_post():
 	if request.method == 'POST':
 		title = request.form['title'] # form также как и args - словарь, title = название поля из форм
 		body = request.form['body']
+		file = request.files['file'] # имя из формы
+		file.save(os.path.join('app/static/images/post/', file.filename))
+		image = file.filename # заносим имя файла в бд
 		try:
-			post = Post(title=title, body=body)
+			post = Post(title=title, body=body, image=image)
 			db.session.add(post)
 			db.session.commit()
 		except:
@@ -202,7 +206,8 @@ def post_detail(slug):
 		'title': post.title,
 		'body': post.body,
 		'date': date,
-		'post': post
+		'post': post,
+		'image':post.image,
 	}
 	title = post.title
 
