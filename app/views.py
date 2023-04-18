@@ -5,7 +5,6 @@ from flask_admin import  AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.upload import ImageUploadField
 from flask_security import login_required
-from werkzeug.utils import secure_filename
 from app import app, db
 import os
 
@@ -97,36 +96,37 @@ class AdminSkillView(ModelView):
 
 class AdminPostView(ModelView):
 	form_extra_fields = {
-            'image': ImageUploadField(
-		'',
-		base_path=os.path.join(file_path, 'app/static/images/post/'),
+            'image_preview': ImageUploadField(
+		'Изображение',
+		base_path=os.path.join(file_path, 'app/static/images/post_preview/'),
 		max_size=(1080, 1920, True),
 		thumbnail_size=(100, 100, True),
             )}
 
+	column_list = (Post.id, "title", "slug", "body", "created", "image_preview", )
+	column_editable_list = ("title", "slug", )
+	form_excluded_columns = ["image"]
 	column_labels = {
 		"title": "Заголовок",
 		"slug": "URL",
 		"body": "Текст",
 		"created": "Дата создания",
-		"image": "Изображение",
+		"image_preview" : "Изображение",
 	}
-
-	column_list = (Post.id, "title", "slug", "body", "created", "image")
 
 	edit_modal = True
 	create_modal = True
 
 	def _list_thumbnail(view, context, model, name):
-		if not model.image:
+		if not model.image_preview:
 			return ""
 
-		url = url_for('static', filename=os.path.join('images/post/', model.image))
-		if model.image.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
+		url = url_for('static', filename=os.path.join('images/post_preview/', model.image_preview))
+		if model.image_preview.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
 			return Markup(f'<img src="{url}" width="35">')
 
 	column_formatters = {
-		'image': _list_thumbnail
+		'image_preview': _list_thumbnail
 	}
 
 	def create_form(self, obj=None):
@@ -145,11 +145,17 @@ def create_post():
 	if request.method == 'POST':
 		title = request.form['title'] # form также как и args - словарь, title = название поля из форм
 		body = request.form['body']
+		
 		file = request.files['file'] # имя из формы
 		file.save(os.path.join('app/static/images/post/', file.filename))
 		image = file.filename # заносим имя файла в бд
+
+		preview = request.files['preview']
+		preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
+		image_preview = preview.filename
+
 		try:
-			post = Post(title=title, body=body, image=image)
+			post = Post(title=title, body=body, image=image, image_preview=image_preview)
 			db.session.add(post)
 			db.session.commit()
 		except:
@@ -191,6 +197,8 @@ def blog():
 	else:
 		posts = Post.query  # .all()
 
+	
+	print(posts)
 	pages = posts.paginate(page=page, per_page=3)
 
 	return render_template('blog/blog.html', posts=posts, pages=pages)

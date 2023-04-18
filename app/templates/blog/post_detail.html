@@ -32,9 +32,11 @@
   </section>
 
   <section>
+    {% if context.image %}
     <div class="container">
       <img class="img-fluid " src="{{ url_for('static', filename='images/post/') + context.image }}" alt="" style="width: 300px;">
     </div>
+    {% endif %}
     <div class="sectionSpaceSm">
       <div class="container">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 

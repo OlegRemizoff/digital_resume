@@ -32,7 +32,11 @@
             <div class="col-md-6 pColMain">
               <div class="pCol">
                 <p>{{ post.title }}</p>
+                {% if not post.image_preview %}
                 <a href="{{ url_for('post_detail', slug=post.slug) }}"><img src="{{ url_for('static', filename='images/project-img.jpg') }}" alt="..." class="pImg"></a>
+                {% else %}
+                <a href="{{ url_for('post_detail', slug=post.slug) }}"><img src="{{ url_for('static', filename='images/post_preview/') + post.image_preview }}" alt="..." class="pImg"></a>
+                {% endif %}
               </div>
             </div>
             {% endfor %}

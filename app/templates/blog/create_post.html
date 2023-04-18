@@ -24,8 +24,15 @@
                   {{ field.label(class="form-label") }}
                   {{ field(class="form-control") }}
                   {% endfor %}
-                  <input class="form-control" type="file" name="file" id="formFile">
-                  <button type="submit" class="btn btnPrimary" style="margin-top: 15px;">Create</button>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Превью</label>
+                    <input class="form-control" type="file" name="preview" id="formFile">
+                  </div>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Изображение</label>
+                    <input class="form-control" type="file" name="file" id="formFile">
+                  </div>
+                  <button type="submit" class="btn btnPrimary" style="margin-top: 5px;">Create</button>
                 </div>
               </form>
           </div>

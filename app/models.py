@@ -61,6 +61,7 @@ class Post(db.Model):
     created = db.Column(db.DateTime, default=datetime.now())
     tags = db.relationship('Tag', secondary=post_tags,
                            backref=db.backref('post', lazy='dynamic'))
+    image_preview = db.Column(db.Text, nullable=True)
     image = db.Column(db.Text, nullable=True)
     
     def __repr__(self) -> str:
