@@ -38,6 +38,11 @@
     </div>
     {% endif %}
     <div class="sectionSpaceSm">
+      {% if context.body != "" %}
+      <div class="container">
+        <p>{{ context.body }}</p>
+      </div>
+      {% else %}
       <div class="container">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
         Aenean congue imperdiet lorem ut posuere. Maecenas nec accumsan 
@@ -50,6 +55,10 @@
         Donec feugiat mauris ante. In hac habitasse platea dictumst.
         </p>
       </div>
+      <div class="container">
+        <p>{{ context.body }}</p>
+      </div>
+      {% endif %}
     </div>
   </section>
 
