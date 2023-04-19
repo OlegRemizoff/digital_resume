@@ -1,10 +1,11 @@
 from flask import render_template, request, url_for, redirect, flash, Markup
-from app.models import Skill, Post, Message
-from app.forms import PostForm, ContactForm
+from app.models import Skill, Post, Message, User
+from app.forms import PostForm, ContactForm, LoginForm
+from flask_login import login_user, logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin import  AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.upload import ImageUploadField
-from flask_security import login_required
 from app import app, db
 import os
 
@@ -14,6 +15,7 @@ file_path = os.path.abspath(os.path.dirname(__name__))
 
 ### Админка ###
 class DashboardView(AdminIndexView): 
+	@login_required
 	@expose('/')
 	@login_required
 	def index(self):
@@ -249,15 +251,49 @@ def contact():
 	return render_template('contact.html', form=form)
 
 
-### Image ###
-# @app.route("/upload", methods=["POST"])
-# def upload_file():
-# 	img = request.file['img']
+### Log in ###
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+	if request.method == "POST":
+		email = request.form.get("email")
+		password = request.form.get("password")
+		print(email, password)
+
+		if email and password:
+			user = User.query.filter_by(email=email).first()
+			if check_password_hash(user.password, password):
+				login_user(user)
+				flash('Logged in successfully.')
+				return redirect(url_for('index'))
+	
+	flash("Something wrong!", category="danger")			
+	form = LoginForm()
+	return render_template('login.html', form=form)
 
 
+@app.route('/register', methods=["POST", "GET"])
+def register():
+	form = LoginForm()		
+	if request.method == "POST":
+		email = request.form.get("email")
+		password = request.form.get("password")
+		password2 = request.form.get("password2")
+		if password != password2:
+			flash("Password are not equal")
+			return redirect(url_for('register'))
+
+		hash_pwd = generate_password_hash(password)
+		new_user = User(email=email, password=hash_pwd, active=True)
+		db.session.add(new_user)
+		db.session.commit()
+		flash('Register has been successfully.')
+		return redirect(url_for('login'))
+	
+	form = LoginForm()
+	return render_template('register.html', form=form)
 
 
-# <div class="mb-3">
-#   <label for="formFile" class="form-label">Пример ввода файла по умолчанию</label>
-#   <input class="form-control" type="file" id="formFile">
-# </div>
+@app.route('/logout', methods=['POST', 'GET'])
+def logout():
+	logout_user()
+	return redirect(url_for('index'))

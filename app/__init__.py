@@ -36,10 +36,11 @@ admin.add_view(ModelView(Role, db.session, name="Роль",
                category="Пользователи", endpoint='admin/post'))
 
 
-### Flask-Admin ###
+### Flask-Security ###
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
-
+security = Security(app, user_datastore) # register_form=
+# user_datastore.create_user(email="", password="")
+# db.session.commit()
 
 
 
