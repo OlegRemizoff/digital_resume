@@ -2,6 +2,7 @@ from flask import render_template, request, url_for, redirect, flash, Markup
 from app.models import Skill, Post, Message, User
 from app.forms import PostForm, ContactForm, LoginForm
 from flask_login import login_user, logout_user, login_required
+from flask_security import roles_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin import  AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
@@ -15,9 +16,8 @@ file_path = os.path.abspath(os.path.dirname(__name__))
 
 ### Админка ###
 class DashboardView(AdminIndexView): 
-	@login_required
 	@expose('/')
-	@login_required
+	@roles_required('admin')
 	def index(self):
 		message = Message.query #.all()
 		
@@ -174,7 +174,7 @@ def edit_post(slug):
 		post = Post.query.filter(Post.slug==slug).first()
 		if request.method == "POST":
 			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
-			form.populate_obj(post) #Заполняет атрибуты переданного объекта нов данными из полей формы.
+			form.populate_obj(post, ) #Заполняет атрибуты переданного объекта нов данными из полей формы.
 			db.session.commit()
 			return redirect(url_for('post_detail', slug=post.slug))
     	
@@ -199,8 +199,8 @@ def blog():
 	else:
 		posts = Post.query  # .all()
 
-	
-	print(posts)
+	print(request.endpoint)
+	# print(posts)
 	pages = posts.paginate(page=page, per_page=3)
 
 	return render_template('blog/blog.html', posts=posts, pages=pages)
@@ -271,6 +271,7 @@ def login():
 	return render_template('login.html', form=form)
 
 
+### Register ###
 @app.route('/register', methods=["POST", "GET"])
 def register():
 	form = LoginForm()		
@@ -293,6 +294,7 @@ def register():
 	return render_template('register.html', form=form)
 
 
+### Log out ###
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
 	logout_user()
