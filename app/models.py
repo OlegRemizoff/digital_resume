@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(255))
-    active = db.Column(db.Boolean())
+    active = db.Column(db.Boolean(), default=True)
     roles = db.relationship('Role', secondary=roles_users,
                              backref=db.backref('users', lazy='dynamic'))
     def __repr__(self) -> str:
