@@ -101,7 +101,7 @@ class AdminPostView(ModelView):
             'image_preview': ImageUploadField(
 		'Изображение',
 		base_path=os.path.join(file_path, 'app/static/images/post_preview/'),
-		max_size=(1080, 1920, True),
+		max_size=(1500, 700, True),
 		thumbnail_size=(100, 100, True),
             )}
 

@@ -64,12 +64,16 @@ class Post(db.Model):
     image_preview = db.Column(db.Text, nullable=True)
     image = db.Column(db.Text, nullable=True)
     
+    
     def __repr__(self) -> str:
             return f'Post id: {self.id}, title: {self.title}'
 
     def __init__(self, *args, **kwargs) -> None:
         super(Post, self).__init__(*args, **kwargs)
         self.slug = slugify(self.title)
+    
+    def get_date(self):
+        return self.created.strftime('%d %B %Y')
 
 
 class Tag(db.Model):
