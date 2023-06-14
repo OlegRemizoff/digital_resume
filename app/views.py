@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin import  AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.upload import ImageUploadField
+from sqlalchemy import desc
 from app import app, db
 import os
 
@@ -203,7 +204,10 @@ def blog():
 	# print(posts)
 	pages = posts.paginate(page=page, per_page=3)
 
-	return render_template('blog/blog.html', posts=posts, pages=pages)
+	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
+	# print("\x1b[31;1m" + 'Posts' + "\x1b[0m", recently_posts)
+
+	return render_template('blog/blog.html', posts=posts, pages=pages, recently_posts=recent_posts)
 
 
 ### Обзор поста ###
