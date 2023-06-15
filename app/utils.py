@@ -1,4 +1,5 @@
 from transliterate import translit
+
 import re
 
 
@@ -9,3 +10,7 @@ def slugify(s):
     while '--' in format_str:
         format_str.replace('--', '-')
     return format_str
+
+
+
+

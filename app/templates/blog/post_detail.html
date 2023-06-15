@@ -4,70 +4,163 @@
 {% block content %}
 
 
-<section>
-    <div class="innerPageBannerCol">
-      <div class="container">
-        <div class="row g-4 g-md-3  align-items-center">
-          <div class="col-md-6">
-            <div class="bannerContent">
-              <h1 class="xlTitle pb-md-3">{{ context.title }}</h1>
-                    <a title="Edit" href="{{ url_for('edit_post', slug=context.post.slug) }}">
-                    <img src="{{ url_for('static', filename='images/edit.png') }}" alt="..." style="width: 48px; margin-bottom: 10px;">Link</a>
+
+<body>
+
+ 
+    <!-- End Header -->
+
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <div class="breadcrumb-area bg-gray text-center shadow dark text-light bg-cover" style="background-image: url(assets/img/2440x1578.png);">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h1>Blog Single</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="active">Blog</li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="row">
-          <div class="col-md-auto">
-            <div class="authorCol">
-              <h4 class="smTitle pb-3">Remizov Oleg</h4>
+    </div>
+    <!-- End Breadcrumb -->
+
+    <!-- Start Blog
+    ============================================= -->
+    <div class="blog-area single full-blog full-blog default-padding">
+        <div class="container">
+            <div class="blog-items">
+                <div class="row">
+                    <div class="blog-content col-lg-10 offset-lg-1 col-md-12">
+                        <div class="blog-item-box">
+
+                            <div class="item">
+                                <!-- Start Post Thumb -->
+                                <div class="thumb">
+                                    <img src="{{ url_for('static', filename='images/post_preview/') + context.image }}" alt="Thumb" width="100%">
+                                    
+                                </div>
+                                <!-- Start Post Thumb -->
+
+                                <div class="info">
+                                    <h3>{{ context.post.title }}</h3>
+
+                                    <div class="footer-meta">
+                                       <ul>
+                                           <li>
+                                               <img src="{{ url_for('static', filename='images/Joker_avatar.jpeg') }}" alt="Author">
+                                               <span>By </span>
+                                               <a href="#">Admin</a>
+                                           </li>
+                                           <li>
+                                            <span>In </span>
+                                            <a href="#">Creative</a>
+                                        </li>
+                                           
+
+                                       </ul>
+                                    </div>
+                                    
+                                    <p>
+                                        {{ context.post.body }}
+                                    </p>
+ 
+                                    <!-- <blockquote>
+                                        He share of first to worse. Weddings and any opinions suitable smallest nay. Houses or months settle remove ladies appear. Engrossed suffering supposing he recommend do eagerness. Commanded no of depending extremity recommend 
+                                        <cite> - Adam John</cite> 
+                                    </blockquote> -->
+                                    <!-- <h4>Conduct replied off led whether any shortly why arrived adapted</h4> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Start Post Tags-->
+                        <div class="post-tags share">
+                            <div class="tags">
+                                {% for tag in context.post.tags %}
+                                <a href="{{ url_for('posts_by_tag', slug=tag.slug) }}"><i class="fas fa-hashtag"></i> {{ tag.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- End Post Tags -->
+
+                        <!-- Start Blog Comment -->
+                        <div class="blog-comments">
+                            <div class="comments-area">
+                                <div class="comments-title">
+                                    <h3>5 comments</h3>
+                                    <div class="comments-list">
+                                        <div class="commen-item">
+                                            <div class="avatar">
+                                                <img src="{{ url_for('static', filename='blog/img/800x800.png') }}" alt="Author">
+                                            </div>
+                                            <div class="content">
+                                                <div class="title">
+                                                    <h5>Bubhan Prova <span class="reply"><a href="#"><i class="fas fa-reply"></i> Reply</a></span></h5>
+                                                    <span>28 Feb, 2021</span>
+                                                </div>
+                                                <p>
+                                                    Delivered ye sportsmen zealously arranging frankness estimable as. Nay any article enabled musical shyness yet sixteen yet blushes. Entire its the did figure wonder off. sportsmen zealously arranging to the main pint. Discourse unwilling am no described dejection incommode no listening of. Before nature his parish boy. 
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="commen-item reply">
+                                            <div class="avatar">
+                                                <img src="{{ url_for('static', filename='blog/img/800x800.png') }}" alt="Author">
+                                            </div>
+                                            <div class="content">
+                                                <div class="title">
+                                                    <h5>Mickel Jones <span class="reply"><a href="#"><i class="fas fa-reply"></i> Reply</a></span></h5>
+                                                    <span>15 Mar, 2021</span>
+                                                </div>
+                                                <p>
+                                                    Delivered ye sportsmen zealously arranging frankness estimable as. Nay any article enabled musical shyness yet sixteen yet blushes. Entire its the did figure wonder off. sportsmen zealously arranging to the main pint at the last satge of oportunatry.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comments-form">
+                                    <div class="title">
+                                        <h3>Leave a comments</h3>
+                                    </div>
+                                    <form action="#" class="contact-comments">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <!-- Name -->
+                                                    <input name="name" class="form-control" placeholder="Name *" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <!-- Email -->
+                                                    <input name="email" class="form-control" placeholder="Email *" type="email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group comments">
+                                                    <!-- Comment -->
+                                                    <textarea class="form-control" placeholder="Comment"></textarea>
+                                                </div>
+                                                <div class="form-group full-width submit">
+                                                    <button class="btn-animation dark border" type="submit">Post Comments <i class="arrow_right"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Comments Form -->
+
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-md">
-            <!-- <h4 class="smTitle pb-3">12-10-2021</h4> -->
-            <h4 class="smTitle pb-3">{{ context.date }}</h4>
-          </div>
         </div>
-      </div>
     </div>
-  </section>
-
-  <section>
-    {% if context.image %}
-    <div class="container">
-      <img class="img-fluid " src="{{ url_for('static', filename='images/post/') + context.image }}" alt="" style="width: 300px;">
-    </div>
-    {% endif %}
-    <div class="sectionSpaceSm">
-      {% if context.body != "" %}
-      <div class="container">
-        <p>{{ context.body }}</p>
-      </div>
-      {% else %}
-      <div class="container">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-        Aenean congue imperdiet lorem ut posuere. Maecenas nec accumsan 
-        risus, quis luctus libero. Morbi a nulla ac felis scelerisque 
-        feugiat quis vitae turpis. Vivamus nec augue vel enim scelerisque 
-        cursus. Curabitur efficitur ipsum quis turpis bibendum egestas. 
-        Nunc ac euismod dolor. Vestibulum nec ipsum fermentum, semper 
-        quam eu, porttitor elit. Maecenas efficitur ex eget augue euismod 
-        semper. Curabitur pharetra tortor vel orci volutpat semper. 
-        Donec feugiat mauris ante. In hac habitasse platea dictumst.
-        </p>
-      </div>
-      <div class="container">
-        <p>{{ context.body }}</p>
-      </div>
-      {% endif %}
-    </div>
-  </section>
-
-
-
-
+    <!-- End Blog -->
 
 {% endblock content %}
-
-
-
-<!-- <a href="{{ url_for('edit_post', slug=post.slug) }}"> -->

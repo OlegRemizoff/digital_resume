@@ -35,7 +35,7 @@
                                     <div class="footer-meta">
                                         <ul>
                                             <li>
-                                                <img src="{{ url_for('static', filename='blog/img/100x100.png') }}"
+                                                <img src="{{ url_for('static', filename='images/Joker_avatar.jpeg') }}"
                                                     alt="Author">
                                                 <span>By </span>
                                                 <a href="#">Admin</a>
@@ -49,7 +49,7 @@
                                     <p>
                                         {{ post.body|truncate(250) }}
                                     </p>
-                                    <a class="btn circle btn-theme border btn-sm" href="#">Read More</a>
+                                    <a class="btn circle btn-theme border btn-sm" href="{{ url_for('post_detail', slug=post.slug) }}">Read More</a>
                                 </div>
                             </div>
                         </div>

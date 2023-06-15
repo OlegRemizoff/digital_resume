@@ -47,7 +47,7 @@
                                         <p>
                                             {{ post.body|truncate(250) }}
                                         </p>
-                                        <a class="btn circle btn-theme border btn-sm" href="#">Read More</a>
+                                        <a class="btn circle btn-theme border btn-sm" href="{{ url_for('post_detail', slug=post.slug) }}">Read More</a>
                                     </div>
                                 </div>
                             </div>

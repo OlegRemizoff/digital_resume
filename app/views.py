@@ -235,7 +235,6 @@ def posts_by_tag(slug):
 															recent_posts=recent_posts)
 
 
-
 ### Обзор поста ###
 @app.route('/blog/<slug>/')
 def post_detail(slug):
@@ -247,7 +246,7 @@ def post_detail(slug):
 		'body': post.body,
 		'date': date,
 		'post': post,
-		'image':post.image,
+		'image':post.image_preview,
 	}
 	title = post.title
 
