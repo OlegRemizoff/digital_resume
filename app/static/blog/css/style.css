@@ -7827,6 +7827,8 @@ ul.achivement li:last-child .counter {
   padding-bottom: 0;
 }
 
+
+
 .sidebar-item.recent-post li a {
   color: #232323;
   display: block;
@@ -7998,11 +8000,11 @@ ul.achivement li:last-child .counter {
   color: #ffffff !important;
 }
 
-.sidebar-item.social-sidebar li.facebook a {
-  background: #3B5998 none repeat scroll 0 0;
+.sidebar-item.social-sidebar li.github a {
+  background: #000000 none repeat scroll 0 0;
 }
 
-.sidebar-item.social-sidebar li.twitter a {
+.sidebar-item.social-sidebar li.telegram a {
   background: #1DA1F2 none repeat scroll 0 0;
 }
 
@@ -8024,6 +8026,7 @@ ul.achivement li:last-child .counter {
 
 .sidebar-item.tags ul li {
   display: inline-block;
+
 }
 
 .sidebar-item.tags ul li a {
@@ -8082,6 +8085,7 @@ ul.achivement li:last-child .counter {
   padding: 10px 25px;
   margin-top: 9px;
 }
+
 
 .blog-area .blog-items.content-less .item .info > a {
   margin-top: 10px;
@@ -8532,8 +8536,8 @@ ul.pagination {
 }
 
 .pagination li.page-item.active a {
-  background: #f35a38;
-  border-color: #f35a38;
+  background: #900AA8;
+  border-color: #900AA8;
 }
 
 
@@ -9120,7 +9124,6 @@ footer.bg-dark .footer-bottom p {
 
 
 
-.blog-thumb {
-
-  
+.sidebar-item.tags ul li a:hover {
+  color: #000000;
 }

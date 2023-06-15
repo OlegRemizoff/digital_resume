@@ -1,0 +1,13 @@
+
+<div class="sidebar-item tags">
+    <div class="title">
+        <h4>tags</h4>
+    </div>
+    <div class="sidebar-info">
+        <ul>
+            {% for tag in tags %}
+            <li><a href="{{ url_for('posts_by_tag', slug=tag.slug) }}"><i class="fas fa-hashtag"></i> {{ tag.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

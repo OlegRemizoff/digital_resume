@@ -1,5 +1,5 @@
 from flask import render_template, request, url_for, redirect, flash, Markup
-from app.models import Skill, Post, Message, User
+from app.models import Skill, Post, Message, User, Tag
 from app.forms import PostForm, ContactForm, LoginForm
 from flask_login import login_user, logout_user, login_required
 from flask_security import roles_required
@@ -116,7 +116,9 @@ class AdminPostView(ModelView):
 		"created": "Дата создания",
 		"image_preview" : "Изображение",
 	}
-
+	column_sortable_list = ('id', "title", "created",)
+	column_searchable_list = ('title', 'body', )
+	column_filters = ('title', 'body', 'created', )
 	edit_modal = True
 	create_modal = True
 
@@ -200,18 +202,42 @@ def blog():
 	else:
 		posts = Post.query  # .all()
 
-	print(request.endpoint)
-	# print(posts)
+	# print(request.endpoint)
+
 	pages = posts.paginate(page=page, per_page=3)
+	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
+	tags = Tag.query.all()
+	# print("\x1b[31;1m" + 'Tags' + "\x1b[0m", tags)
+	print(pages)
+	return render_template('blog/blog.html', posts=posts, pages=pages, tags=tags,
+														recent_posts=recent_posts)
+
+
+
+### Посты по тегу ###
+@app.route('/blog/tag/<slug>/')
+def posts_by_tag(slug):
+
+	page = request.args.get("page")
+	if page and page.isdigit():
+		page = int(page)
+	else:
+		page = 1
+
+	tag = Tag.query.filter(Tag.slug==slug).first() # находим тег по слагу и получим связаные  посты
+	posts = tag.post # .all() # благодоря backref tag получает поле post [post1, post9, ...]
+	pages = posts.paginate(page=page, per_page=1)
 
 	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
-	# print("\x1b[31;1m" + 'Posts' + "\x1b[0m", recently_posts)
+	tags = Tag.query.all()
 
-	return render_template('blog/blog.html', posts=posts, pages=pages, recently_posts=recent_posts)
+	return render_template('blog/posts_by_tag.html', tag=tag, pages=pages, tags=tags,
+															recent_posts=recent_posts)
+
 
 
 ### Обзор поста ###
-@app.route('/blog/<slug>')
+@app.route('/blog/<slug>/')
 def post_detail(slug):
 	post = Post.query.filter(Post.slug == slug).first()
 	date = post.created.strftime("%d-%m-%Y  %H:%m %p")

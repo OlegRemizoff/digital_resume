@@ -1,0 +1,25 @@
+
+<div class="sidebar-item recent-post">
+    <div class="title">
+        <h4>Recent Post</h4>
+    </div>
+    <ul>
+        {% for post in  recent_posts %}            
+        <li>
+            <div class="thumb">
+                <a href="#">
+                    <img src="{{ url_for('static', filename='images/post_preview/') + post.image_preview }}"
+                        alt="Thumb" style="width: 100px; height: 50px">
+                </a>
+            </div>
+            <div class="info">
+                <div class="meta-title">
+                    <span class="post-date"><i class="fas fa-clock"></i>{{ post.get_date() }}</span>
+                </div>
+                <a href="#">{{ post.title|truncate(40) }}</a>
+            </div>
+        </li>
+        {% endfor %}
+        
+    </ul>
+</div>

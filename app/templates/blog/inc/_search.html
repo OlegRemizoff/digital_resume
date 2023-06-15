@@ -1,0 +1,9 @@
+
+<div class="sidebar-item search">
+    <div class="sidebar-info">
+        <form role="search", method="GET">
+            <input type="text" name="q" value="{{ request.args.get('q', '') }}" class="form-control" placeholder="Search">
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+</div>

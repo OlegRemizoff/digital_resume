@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}  #{{ tag.name }} {% endblock %}
+
+{% block content %}
+
+
+<!-- Start Blog
+    ============================================= -->
+    <div class="blog-area full-blog right-sidebar full-blog default-padding">
+        <div class="container">
+            <div class="blog-items">
+                <div class="row">
+                    <div class="blog-content col-lg-8 col-md-12">
+                        <div class="blog-item-box">
+                            <!-- Single Item -->
+                            {% for post in pages.items %}
+                            <div class="single-item">
+                                <div class="item">
+                                    <div class="thumb">
+                                        {% if post.image_preview %}
+                                        <img src="{{ url_for('static', filename='images/post_preview/') + post.image_preview }}" alt="..." class="pImg">
+                                        {% else %}
+                                        <img src="{{ url_for('static', filename='blog/img/1500x700.png') }}" alt="Thumb">
+                                        {% endif %}
+    
+                                        <div class="date">{{ post.get_date() }}</div>
+                                    </div>
+                                    <div class="info">
+                                        <h3>
+                                            <a href="{{ url_for('post_detail', slug=post.slug) }}">{{ post.title }}</a>
+                                        </h3>
+                                        <div class="footer-meta">
+                                            <ul>
+                                                <li>
+                                                    <img src="{{ url_for('static', filename='blog/img/100x100.png') }}"
+                                                        alt="Author">
+                                                    <span>By </span>
+                                                    <a href="#">Admin</a>
+                                                </li>
+                                                <li>
+                                                    <span>In </span>
+                                                    <a href="#">Digital</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <p>
+                                            {{ post.body|truncate(250) }}
+                                        </p>
+                                        <a class="btn circle btn-theme border btn-sm" href="#">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- End Single Item -->
+                        </div>
+    
+                        <!-- Pagination -->
+                        <div class="row">
+                            <div class="col-md-12 pagi-area text-center">
+                                <nav aria-label="navigation">
+                                    <ul class="pagination">
+                                        {% if pages.has_prev %}
+                                        <li class="page-item"><a class="page-link" href="#"><i
+                                                    class="fas fa-angle-double-left"></i></a></li>
+                                        {% endif %}
+                                        {% for page in pages.iter_pages() %}
+                                        
+                                        <li {% if page == pages.page %} class="page-item active" {% endif %}><a class="page-link" href="./?page={{ page }}">{{ page }}</a></li>
+    
+                                        <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+                                        {% endfor %}
+    
+                                        {% if pages.has_next %}
+                                        <li class="page-item"><a class="page-link" href="#"><i
+                                                    class="fas fa-angle-double-right"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start Sidebar -->
+                    <div class="sidebar col-lg-4 col-md-12">
+                        <aside>
+                            {% include 'blog/inc/_search.html' %}
+                            {% include 'blog/inc/_recent.html' %}
+                            {% include 'blog/inc/_social.html' %}
+                            {% include 'blog/inc/_tags.html' %}
+                        </aside>
+                    </div>
+                    <!-- End Start Sidebar -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Blog -->
+
+
+
+
+{% endblock %}
