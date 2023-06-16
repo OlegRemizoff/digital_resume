@@ -6,12 +6,29 @@
 
 
 
+    <!-- Start Breadcrumb 
+    ============================================= -->
+    <!-- <div class="breadcrumb-area bg-gray text-center shadow dark text-light bg-cover" style="background-image: url('/static/images/home-bg.jpg')" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h1>Blog Sidebar</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="{{ url_for('create_post') }}"><i class="fas fa-keyboard"></i> </i>Create post</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- End Breadcrumb -->
 
 <!-- Start Blog
     ============================================= -->
 <div class="blog-area full-blog right-sidebar full-blog default-padding">
     <div class="container">
         <div class="blog-items">
+            <h4><a href="{{ url_for('create_post') }}"><i class="fas fa-keyboard"></i> </i>Create post</a></h4>
             <div class="row">
                 <div class="blog-content col-lg-8 col-md-12">
                     <div class="blog-item-box">
@@ -56,7 +73,6 @@
                         {% endfor %}
                         <!-- End Single Item -->
                     </div>
-
                     <!-- Pagination -->
                     <div class="row">
                         <div class="col-md-12 pagi-area text-center">
@@ -85,6 +101,7 @@
                 </div>
                 <!-- Start Sidebar -->
                 <div class="sidebar col-lg-4 col-md-12">
+                    <!-- <a href="{{ url_for('create_post') }}"><i class="fas fa-keyboard"></i> </i>Create post</a> -->
                     <aside>
                         {% include 'blog/inc/_search.html' %}
                         {% include 'blog/inc/_recent.html' %}

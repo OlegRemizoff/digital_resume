@@ -1,10 +1,10 @@
 from wtforms import Form, StringField, TextAreaField, PasswordField
-from wtforms.validators import Email
+from wtforms.validators import Email, InputRequired, Length
 
 
 class PostForm(Form):
-    title = StringField('Title')
-    body = TextAreaField('Body')
+    title = StringField('Придумайте заголовок', validators=[InputRequired(), Length(min=5, max=250)])
+    body = TextAreaField('Вступление', validators=[InputRequired(), Length(min=5)])
 
 
 class ContactForm(Form):

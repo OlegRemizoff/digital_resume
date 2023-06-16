@@ -119,6 +119,7 @@ class AdminPostView(ModelView):
 	column_sortable_list = ('id', "title", "created",)
 	column_searchable_list = ('title', 'body', )
 	column_filters = ('title', 'body', 'created', )
+	page_size = 10
 	edit_modal = True
 	create_modal = True
 
@@ -148,24 +149,26 @@ class AdminPostView(ModelView):
 @app.route('/blog/create', methods=['GET', 'POST'])
 def create_post():
 	if request.method == 'POST':
-		title = request.form['title'] # form также как и args - словарь, title = название поля из форм
-		body = request.form['body']
+		title = request.form.get('title') # form также как и args-словарь, title = название поля из форм
+		body = request.form.get('body')
 		
-		file = request.files['file'] # имя из формы
-		file.save(os.path.join('app/static/images/post/', file.filename))
-		image = file.filename # заносим имя файла в бд
+		# file = request.files['file'] # имя из формы
+		# file.save(os.path.join('app/static/images/post/', file.filename))
+		# image = file.filename # заносим имя файла в бд
 
-		preview = request.files['preview']
-		preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
+		preview = request.files.get('preview')
+		if preview:
+			preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
 		image_preview = preview.filename
 
-		try:
-			post = Post(title=title, body=body, image=image, image_preview=image_preview)
-			db.session.add(post)
-			db.session.commit()
-		except:
-			print("Something wrong!")
-		return redirect(url_for('blog'))
+		if title and body:
+			try:
+				post = Post(title=title, body=body, image_preview=image_preview)
+				db.session.add(post)
+				db.session.commit()
+			except:
+					print("Something wrong!")
+			return redirect(url_for('blog'))
 		
 	form = PostForm()
 	return render_template('blog/create_post.html', form=form)

@@ -866,3 +866,8 @@ margin-bottom: 5px;
   margin-left: 5px;
 
 }
+
+.innerPageBannerCol .form-group .rules {
+  border: 1px solid #900AA8; border-radius: 5px; 
+
+}

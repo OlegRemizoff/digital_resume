@@ -6,20 +6,16 @@
 
 
 <body>
-
- 
-    <!-- End Header -->
-
     <!-- Start Breadcrumb 
     ============================================= -->
-    <div class="breadcrumb-area bg-gray text-center shadow dark text-light bg-cover" style="background-image: url(assets/img/2440x1578.png);">
+    <div class="breadcrumb-area bg-gray text-center shadow dark text-light bg-cover" style="background-image: url('/static/images/home-bg.jpg')" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">
-                    <h1>Blog Single</h1>
+                    <h1>Blog Sidebar</h1>
                     <ul class="breadcrumb">
-                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-                        <li class="active">Blog</li>
+                        <li><a href="{{ url_for('blog') }}"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="{{ url_for('create_post') }}"><i class="fas fa-keyboard"></i> </i>Create post</a></li>
                     </ul>
                 </div>
             </div>
