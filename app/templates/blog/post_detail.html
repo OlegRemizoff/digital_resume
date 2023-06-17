@@ -15,7 +15,7 @@
                     <h1>Blog Sidebar</h1>
                     <ul class="breadcrumb">
                         <li><a href="{{ url_for('blog') }}"><i class="fas fa-home"></i> Home</a></li>
-                        <li><a href="{{ url_for('create_post') }}"><i class="fas fa-keyboard"></i> </i>Create post</a></li>
+                        <li><a href="{{ url_for('edit_post', slug=context.post.slug) }}"><i class="fas fa-keyboard"></i> </i>Edit post</a></li>
                     </ul>
                 </div>
             </div>
@@ -31,15 +31,16 @@
                 <div class="row">
                     <div class="blog-content col-lg-10 offset-lg-1 col-md-12">
                         <div class="blog-item-box">
-
                             <div class="item">
                                 <!-- Start Post Thumb -->
                                 <div class="thumb">
-                                    <img src="{{ url_for('static', filename='images/post_preview/') + context.image }}" alt="Thumb" width="100%">
-                                    
+                                    {% if context.image_preview %}
+                                    <img src="{{ url_for('static', filename='images/post_preview/') + context.image_preview }}" alt="Thumb" width="100%">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='blog/img/1500x700.png') }}" alt="Thumb" width="100%">
+                                    {% endif %}
                                 </div>
                                 <!-- Start Post Thumb -->
-
                                 <div class="info">
                                     <h3>{{ context.post.title }}</h3>
 
@@ -82,10 +83,11 @@
                         </div>
                         <!-- End Post Tags -->
 
+
                         <!-- Start Blog Comment -->
                         <div class="blog-comments">
                             <div class="comments-area">
-                                <div class="comments-title">
+                                <!-- <div class="comments-title">
                                     <h3>5 comments</h3>
                                     <div class="comments-list">
                                         <div class="commen-item">
@@ -117,10 +119,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="comments-form">
                                     <div class="title">
-                                        <h3>Leave a comments</h3>
+                                    <h3><strike>Leave a comments</strike></h3> 
                                     </div>
                                     <form action="#" class="contact-comments">
                                         <div class="row">

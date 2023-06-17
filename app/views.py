@@ -119,7 +119,6 @@ class AdminPostView(ModelView):
 	column_sortable_list = ('id', "title", "created",)
 	column_searchable_list = ('title', 'body', )
 	column_filters = ('title', 'body', 'created', )
-	page_size = 10
 	edit_modal = True
 	create_modal = True
 
@@ -149,7 +148,7 @@ class AdminPostView(ModelView):
 @app.route('/blog/create', methods=['GET', 'POST'])
 def create_post():
 	if request.method == 'POST':
-		title = request.form.get('title') # form также как и args-словарь, title = название поля из форм
+		title = request.form.get('title') # form также как и args - словарь, title=название поля из форм
 		body = request.form.get('body')
 		
 		# file = request.files['file'] # имя из формы
@@ -157,18 +156,16 @@ def create_post():
 		# image = file.filename # заносим имя файла в бд
 
 		preview = request.files.get('preview')
-		if preview:
-			preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
+		preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
 		image_preview = preview.filename
 
-		if title and body:
-			try:
-				post = Post(title=title, body=body, image_preview=image_preview)
-				db.session.add(post)
-				db.session.commit()
-			except:
-					print("Something wrong!")
-			return redirect(url_for('blog'))
+		try:
+			post = Post(title=title, body=body,  image_preview=image_preview)
+			db.session.add(post)
+			db.session.commit()
+		except:
+			print("Something wrong!")
+		return redirect(url_for('post_detail', slug=post.slug))
 		
 	form = PostForm()
 	return render_template('blog/create_post.html', form=form)
@@ -177,15 +174,27 @@ def create_post():
 ### Редактировать пост ###
 @app.route('/blog/<slug>/edit/', methods=['GET', 'POST'])
 def edit_post(slug):
-		post = Post.query.filter(Post.slug==slug).first()
-		if request.method == "POST":
+	post = Post.query.filter(Post.slug==slug).first()
+	
+	if request.method == "POST":
+		preview = request.files.get('preview')
+		if preview:
+			preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
+			image_preview = preview.filename
+			post.image_preview = image_preview # переопределяем изображение на полученное
+
 			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
-			form.populate_obj(post, ) #Заполняет атрибуты переданного объекта нов данными из полей формы.
+			form.populate_obj(post,)# Заполняет атриб переданного объекта нов данными из полей формы.
 			db.session.commit()
 			return redirect(url_for('post_detail', slug=post.slug))
-    	
-		form = PostForm(obj=post)
-		return render_template('blog/edit_post.html', post=post, form=form)
+		else:
+			form = PostForm(formdata=request.form, obj=post) 
+			form.populate_obj(post, )
+			db.session.commit()
+			return redirect(url_for('post_detail', slug=post.slug))
+
+	form = PostForm(obj=post)
+	return render_template('blog/edit_post.html', post=post, form=form)
 
 
 ### Список постов ###
@@ -238,8 +247,9 @@ def posts_by_tag(slug):
 															recent_posts=recent_posts)
 
 
+
 ### Обзор поста ###
-@app.route('/blog/<slug>/')
+@app.route('/blog/post_detail/<slug>/')
 def post_detail(slug):
 	post = Post.query.filter(Post.slug == slug).first()
 	date = post.created.strftime("%d-%m-%Y  %H:%m %p")
@@ -249,7 +259,7 @@ def post_detail(slug):
 		'body': post.body,
 		'date': date,
 		'post': post,
-		'image':post.image_preview,
+		'image_preview':post.image_preview,
 	}
 	title = post.title
 

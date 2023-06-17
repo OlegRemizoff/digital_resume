@@ -10,7 +10,7 @@
                 {% if post.image_preview %}
                 <a href="{{ url_for('post_detail', slug=post.slug) }}">
                     <img src="{{ url_for('static', filename='images/post_preview/') + post.image_preview }}"
-                        alt="Thumb" style="width: 100px; height: 50px">
+                        alt="Thumb" style="width: 100%; height: auto">
                 </a>
                 {% else %}
                 <a href="{{ url_for('post_detail', slug=post.slug) }}">
