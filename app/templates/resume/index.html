@@ -1,40 +1,42 @@
 {% extends 'base.html' %}
 
 
-{% block title %}  Home  {% endblock %}
+{% block title %} Home {% endblock %}
 {% block content %}
 {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
+{% if messages %}
+<ul class=flashes>
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
 {% endwith %}
 
-    <section>
-      <div class="bannerSection">
-        <div class="container">
-          <div class="row g-4 g-md-3  align-items-center">
-            <div class="col-md-auto order-md-last">
-              <div class="bannerUserImg">
-                <img src="{{ url_for('static', filename='images/programer.gif') }}" alt="...">
-              </div>
-            </div>
-              <div class="col-md">
-                <div class="bannerContent">
-                  <h1 class="xlTitle pb-3">
-                    Hi, I’m Oleg, <br>
-                    a <span class="multiple-text"></span> <br> back-end Developer
-                  </h1>
+<section>
+  <div class="bannerSection">
+    <div class="container">
+      <div class="row g-4 g-md-3  align-items-center">
+        <div class="col-md-auto order-md-last">
+          <div class="bannerUserImg">
+            <img src="{{ url_for('static', filename='images/programer.gif') }}" alt="...">
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="bannerContent">
+            <h1 class="xlTitle pb-3">
+              Hi, I’m Oleg, <br>
+              a <span class="multiple-text"></span> <br> back-end Developer
+            </h1>
 
 
 
-                  <p>Glad to see you here! I'm a passionate learner who's always willing to learn and work across technologies. I love to explore new technologies and leverage them to solve real-life problems sparkles. I'm currently working on my pet-project and always open to new ideas and opportunities.</p>
-                </div>
+            <p>Glad to see you here! I'm a passionate learner who's always willing to learn and work across
+              technologies. I love to explore new technologies and leverage them to solve real-life problems sparkles.
+              I'm currently working on my pet-project and always open to new ideas and opportunities.</p>
+          </div>
 
-                <!-- <script>
+          <!-- <script>
                     const text = document.querySelector(".sec-text");
 
                     const textLoad = () => {
@@ -53,127 +55,156 @@
                     setInterval(textLoad, 8000);
                 </script> -->
 
-                <div class="bannerBtnCol">
-                  <div class="row">
-                    <div class="col-auto">
-                      <a download href="javascript:void(0)" class="btn circle btn-theme border btn-sm" title="not yet written &#128169;">Download CV</a>
-                    </div>
-                    <!--Show contacts ================================
+          <div class="bannerBtnCol">
+            <div class="row">
+              <div class="col-auto">
+                <!-- <a download href="javascript:void(0)" class="btn circle btn-theme border btn-sm" title="not yet written &#128169;">Download CV</a> -->
+                <a href="{{ url_for('contact') }}" class="btn circle btn-theme border btn-sm">Send me a message</a>
+              </div>
+
+              <!--Show contacts ================================
                      ============================================== -->
-                    <div class="col-auto">
-                      <button type="submit" class="btn circle btn-theme border btn-sm" id="liveToastBtn">Contacts</button>
-    
-                      <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                          <div class="toast-header">
-                            <img src="{{ url_for('static', filename='images/contact.png') }}" class="rounded me-2" alt="...">
-                            <strong class="me-auto">Get in touch with me</strong>
-                            <small>Now</small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
-                          </div>
-                          <div class="toast-body">
-                            <p>
-                              <img src="{{ url_for('static', filename='images/gmail.svg') }}" alt="" style="width: 27px;">
-                              <span class="show-contact">job.rem1zoff@gmail.com</span>
-                            </p>
-                            <p>
-                              <img src="{{ url_for('static', filename='images/telegram.svg') }}" alt=""><span class="show-contact">https://t.me/rem1zoff_oleg</span>
-                            </p>
-                            <p>
-                              <img src="{{ url_for('static', filename='images/git-logo.png') }}" style="width: 33px;" alt=""><span class="show-contact">https://github.com/OlegRemizoff</span>
-                            </p>
-                          </div>
-                        </div>
+              <div class="col-auto">
+                <button class="btn circle btn-theme border btn-sm" type="button" data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Contacts</button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                  aria-labelledby="offcanvasRightLabel">
+                  <div class="offcanvas-header">
+                    <h3 class="offcanvas-title" id="offcanvasRightLabel"></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+                  </div>
+                  <div class="offcanvas-body">
+
+                    <div class="col-sm-12" style="margin-top: -25px;"><img
+                        src="{{ url_for('static', filename='images/gary-goodspeed-.png') }}" alt=""
+                        style="height: 400px; width: auto; "></div>
+
+                    <div class="sidebar-item social-sidebar">
+                      <div class="title">
+                        <h4></h4>
                       </div>
-                      
-                      <script>
-                        var now = new Date();
-                        const toastTrigger = document.getElementById('liveToastBtn')
-                        const toastLiveExample = document.getElementById('liveToast')
-                        if (toastTrigger) {
-                          toastTrigger.addEventListener('click', () => {
-                            const toast = new bootstrap.Toast(toastLiveExample)
-    
-                            toast.show()
-                          })
-                        }
-                      </script>
-                      
+                      <div class="sidebar-info">
+                        <ul>
+                          <li class="github">
+                            <a href="https://github.com/OlegRemizoff">
+                              <i class="fab fa-github"></i>
+                            </a>
+                          </li>
+                          <li class="telegram">
+                            <a href="https://t.me/rem1zoff_oleg">
+                              <i class="fab fa-telegram-plane"></i>
+                            </a>
+                          </li>
+                          <li class="g-plus">
+                            <a href="malito:job.rem1zoff@gmail.com">
+                              <i class="fab fa-google-plus-g"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    <!--End contacts ================================
+                    <br>
+
+                    <div>
+                      <p>
+                        <img src="{{ url_for('static', filename='images/gmail.svg') }}" alt="" style="width: 27px;">
+                        <span class="show-contact">job.rem1zoff@gmail.com</span>
+                      </p>
+                      <p>
+                        <img src="{{ url_for('static', filename='images/telegram.svg') }}" alt=""><span
+                          class="show-contact">https://t.me/rem1zoff_oleg</span>
+                      </p>
+                      <p>
+                        <img src="{{ url_for('static', filename='images/git-logo.png') }}" style="width: 33px;"
+                          alt=""><span class="show-contact">https://github.com/OlegRemizoff</span>
+                      </p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+              <!--End contacts ================================
                     ============================================== -->
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+  </div>
+</section>
 
-    <section>
-      <div class="sectionSpace pt-0">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-auto">
-              <div class="keySkillCol">
-                <h4 class="smTitle pb-3">Key Skills</h4>
-                <div class="keySkillCard">
-                  <div class="ksIconCol">
-                    <img src="{{ url_for('static', filename='images/linux-logo.png') }}" alt="...">
-                  </div>
-                  <span class="ksText">Linux</span>
-                </div>
-                <div class="keySkillCard">
-                  <div class="ksIconCol">
-                    <a href="https://github.com/OlegRemizoff"><img src="{{ url_for('static', filename='images/git-logo.png') }}" alt="..." title="Go to GitHub"></a>
-                  </div>     
-                  <span class="ksText">Git</span>
-                </div>
-                <div class="keySkillCard">
-                  <div class="ksIconCol">
-                    <img src="{{ url_for('static', filename='images/docker-logo.png') }}" alt="...">
-                  </div>
-                  <span class="ksText">Docker</span>
-                </div>
+<section>
+  <div class="sectionSpace pt-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-auto">
+          <div class="keySkillCol">
+            <h4 class="smTitle pb-3">Key Skills</h4>
+            <div class="keySkillCard">
+              <div class="ksIconCol">
+                <img src="{{ url_for('static', filename='images/linux-logo.png') }}" alt="...">
               </div>
+              <span class="ksText">Linux</span>
             </div>
-            <div class="col-md">
-              <h4 class="smTitle pb-3">Coding Skills</h4>
+            <div class="keySkillCard">
+              <div class="ksIconCol">
+                <a href="https://github.com/OlegRemizoff"><img
+                    src="{{ url_for('static', filename='images/git-logo.png') }}" alt="..." title="Go to GitHub"></a>
+              </div>
+              <span class="ksText">Git</span>
+            </div>
+            <div class="keySkillCard">
+              <div class="ksIconCol">
+                <img src="{{ url_for('static', filename='images/docker-logo.png') }}" alt="...">
+              </div>
+              <span class="ksText">Docker</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md">
+          <h4 class="smTitle pb-3">Coding Skills</h4>
+          <div class="progressCol">
+            <div class="progressCard">
+              {% for s in skill|sort(attribute='position') %}
               <div class="progressCol">
-                <div class="progressCard">
-                  {% for s in skill|sort(attribute='position') %}
-                  <div class="progressCol">
-                    <img src="/static/images/{{ s.image }}" alt="">
-                    <span class="progressLbl">
-                      
-                      {{ s.name }}
+                <img src="/static/images/{{ s.image }}" alt="">
+                <span class="progressLbl">
 
-                      <!-- {% filter random  %}{{ s.name }}{% endfilter %} -->
-                    </span>
-                    <div class="row g-2 align-items-center">
-                      <div class="col">
-                        <div class="progress progressStyle">
-                          <div class="progress-bar" role="progressbar" style="width: {{ s.score }}%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <span class="pLbl">{{ s.score }}%</span>
-                      </div>
+                  {{ s.name }}
+
+                  <!-- {% filter random  %}{{ s.name }}{% endfilter %} -->
+                </span>
+                <div class="row g-2 align-items-center">
+                  <div class="col">
+                    <div class="progress progressStyle">
+                      <div class="progress-bar" role="progressbar" style="width: {{ s.score }}%" aria-valuenow="95"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
-                  {% endfor %}
+                  <div class="col-auto">
+                    <span class="pLbl">{{ s.score }}%</span>
+                  </div>
                 </div>
               </div>
+              {% endfor %}
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- Certuficates==================================
+<!-- Certuficates==================================
     =================================================== -->
-    <!-- <section>
+<!-- <section>
       <div class="sectionSpaceSm lightBg">
         <div class="container">
           <div class="row pb-3">
@@ -234,105 +265,114 @@
     </section> -->
 
 
-    <!-- Start eatured Works=============================
+<!-- Start eatured Works=============================
     ===================================================-->
-    <section>
-      <div class="sectionSpace">
-        <div class="container">
-          <div class="portfolioCol">
-            <div class="row pb-3">
-              <div class="col">
-                <h4 class="smText regular">Featured Work</h4>
-              </div>
-              <div class="col-auto">
-                <!-- <a href="javascript:void(0)" class="simpleLink">View all</a> -->
-              </div>
-            </div>
-            <div class="portfolioCard">
-              <div class="row g-4 align-items-center">
-                <div class="col-md-auto feature-wrapper ">
-                  <div class="portfolioImgCol">
-                    <a href="{{ url_for('static', filename='images/e-shop_02.png') }}" data-fancybox="gallery" data-caption="Caption #1">
-                      <img class="imag-fluid" src="{{ url_for('static', filename='images/e-shop_02.png') }}" />
-                    </a>
-                  </div>
-                </div>
-                <div class="col-md-auto feature-wrapper ">
-                  <div class="portfolioImgCol">
-                    <a href="{{ url_for('static', filename='images/e-shop_01.png') }}" data-fancybox="gallery" data-caption="Caption #1">
-                      <img class="imag-fluid" src="{{ url_for('static', filename='images/e-shop_01.png') }}" />
-                    </a>
-                  </div>
-                </div>
-                <div class="col-md">
-                  <div class="portfolioContentCol">
-                    <h4 class="lgTitle"><a href="http://olegrem1zoff.pythonanywhere.com/"><span style="text-decoration: underline;">Go to website </span></a></h4>
-                    <ul class="portfolioOption">
-                      <li><span class="dateLbl">2023</span></li>
-                      <li>Marketplace</li>
-                    </ul>
-                    <!-- <p>Магазин электронной коммерции написанный на фреймворке Django</p> -->
-                    <p>E-commerce store written to the Django framework</p>
-                  </div>
-                </div>
+<section>
+  <div class="sectionSpace">
+    <div class="container">
+      <div class="portfolioCol">
+        <div class="row pb-3">
+          <div class="col">
+            <h4 class="smText regular">Featured Work</h4>
+          </div>
+          <div class="col-auto">
+            <!-- <a href="javascript:void(0)" class="simpleLink">View all</a> -->
+          </div>
+        </div>
+        <div class="portfolioCard">
+          <div class="row g-4 align-items-center">
+            <div class="col-md-auto feature-wrapper ">
+              <div class="portfolioImgCol">
+                <a href="{{ url_for('static', filename='images/e-shop_02.png') }}" data-fancybox="gallery"
+                  data-caption="Caption #1">
+                  <img class="imag-fluid" src="{{ url_for('static', filename='images/e-shop_02.png') }}" />
+                </a>
               </div>
             </div>
-            <div class="portfolioCard">
-              <div class="row g-4 align-items-center">
-                <div class="col-md-auto feature-wrapper ">
-                  <div class="portfolioImgCol">
-                    <a href="{{ url_for('static', filename='images/resume_01.png') }}" data-fancybox="gallery" data-caption="Caption #1">
-                      <img class="imag-fluid" src="{{ url_for('static', filename='images/resume_01.png') }}" />
-                    </a>
-                  </div>
-                </div>
-                <div class="col-md-auto feature-wrapper ">
-                  <div class="portfolioImgCol">
-                    <a href="{{ url_for('static', filename='images/resume_02.png') }}" data-fancybox="gallery" data-caption="Caption #1">
-                      <img class="imag-fluid" src="{{ url_for('static', filename='images/resume_02.png') }}" />
-                    </a>
-                  </div>
-                </div>
-                <div class="col-md">
-                  <div class="portfolioContentCol">
-                    <h4 class="lgTitle"><a href="#"><span style="text-decoration: underline;">You are already here</span></a></h4>
-                    <ul class="portfolioOption">
-                      <li><span class="dateLbl">2023</span></li>
-                      <li>Resume-Blog</li>
-                    </ul>
-                    <!-- <p>Электронное резюме-блог  создан при помощи фреймворка Flask</p> -->
-                    <p>Electronic resume-blog created using the Flask framework</p>
-                  </div>
-                </div>
+            <div class="col-md-auto feature-wrapper ">
+              <div class="portfolioImgCol">
+                <a href="{{ url_for('static', filename='images/e-shop_01.png') }}" data-fancybox="gallery"
+                  data-caption="Caption #1">
+                  <img class="imag-fluid" src="{{ url_for('static', filename='images/e-shop_01.png') }}" />
+                </a>
               </div>
             </div>
-            <div class="portfolioCard">
-              <div class="row g-4 align-items-center">
-                <div class="col-md-auto">
-                  <div class="portfolioImgCol">
-                    <a href="javascript:void(0)"><img src="{{ url_for('static', filename='images/rik.png') }}" style="height: 200px;"  alt="..."></a>
-                  </div>
-                </div>
-                <div class="col-md">
-                  <div class="portfolioContentCol">
-                    <h4 class="lgTitle"><a href="javascript:void(0)">Portfolio option 3</a></h4>
-                    <ul class="portfolioOption">
-                      <li><span class="dateLbl">2023</span></li>
-                      <!-- <li>Coming soon</li> -->
-                    </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis harum corporis, incidunt doloribus, cumque ea amet molestias sint ratione adipisci explicabo dolorem eos, repellendus reprehenderit architecto quasi placeat qui fuga?</p>
-                  </div>
-                </div>
+            <div class="col-md">
+              <div class="portfolioContentCol">
+                <h4 class="lgTitle"><a href="http://olegrem1zoff.pythonanywhere.com/"><span
+                      style="text-decoration: underline;">Go to website </span></a></h4>
+                <ul class="portfolioOption">
+                  <li><span class="dateLbl">2023</span></li>
+                  <li>Marketplace</li>
+                </ul>
+                <!-- <p>Магазин электронной коммерции написанный на фреймворке Django</p> -->
+                <p>E-commerce store written to the Django framework</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="portfolioCard">
+          <div class="row g-4 align-items-center">
+            <div class="col-md-auto feature-wrapper ">
+              <div class="portfolioImgCol">
+                <a href="{{ url_for('static', filename='images/resume_01.png') }}" data-fancybox="gallery"
+                  data-caption="Caption #1">
+                  <img class="imag-fluid" src="{{ url_for('static', filename='images/resume_01.png') }}" />
+                </a>
+              </div>
+            </div>
+            <div class="col-md-auto feature-wrapper ">
+              <div class="portfolioImgCol">
+                <a href="{{ url_for('static', filename='images/resume_02.png') }}" data-fancybox="gallery"
+                  data-caption="Caption #1">
+                  <img class="imag-fluid" src="{{ url_for('static', filename='images/resume_02.png') }}" />
+                </a>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="portfolioContentCol">
+                <h4 class="lgTitle"><a href="#"><span style="text-decoration: underline;">You are already
+                      here</span></a></h4>
+                <ul class="portfolioOption">
+                  <li><span class="dateLbl">2023</span></li>
+                  <li>Resume-Blog</li>
+                </ul>
+                <!-- <p>Электронное резюме-блог  создан при помощи фреймворка Flask</p> -->
+                <p>Electronic resume-blog created using the Flask framework</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="portfolioCard">
+          <div class="row g-4 align-items-center">
+            <div class="col-md-auto">
+              <div class="portfolioImgCol">
+                <a href="javascript:void(0)"><img src="{{ url_for('static', filename='images/rik.png') }}"
+                    style="height: 200px;" alt="..."></a>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="portfolioContentCol">
+                <h4 class="lgTitle"><a href="javascript:void(0)">Portfolio option 3</a></h4>
+                <ul class="portfolioOption">
+                  <li><span class="dateLbl">2023</span></li>
+                  <!-- <li>Coming soon</li> -->
+                </ul>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis harum corporis, incidunt
+                  doloribus, cumque ea amet molestias sint ratione adipisci explicabo dolorem eos, repellendus
+                  reprehenderit architecto quasi placeat qui fuga?</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>  
-    <!-- End Featured Works=============================
+    </div>
+  </div>
+</section>
+<!-- End Featured Works=============================
     ===================================================-->
 
-    <!-- <section>
+<!-- <section>
       <div class="sectionSpaceSm lightBg">
         <div class="container">
           <div class="row pb-3">
@@ -370,5 +410,3 @@
     </section>
 
 {% endblock content %}    
-
-
