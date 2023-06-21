@@ -13,5 +13,6 @@ class ContactForm(Form):
     message = TextAreaField('Message')
 
 class LoginForm(Form):
+    name = StringField('Name', validators=[InputRequired(), Length(min=3, max=20)])
     email = StringField('Email', validators=[Email()])
     password = PasswordField("Password")

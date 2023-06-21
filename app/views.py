@@ -1,5 +1,5 @@
 from flask import render_template, request, url_for, redirect, flash, Markup
-from app.models import Skill, Post, Message, User, Tag
+from app.models import Skill, Post, Message, User, Tag, Category
 from app.forms import PostForm, ContactForm, LoginForm
 from flask_login import login_user, logout_user, login_required
 from flask_security import roles_required
@@ -15,7 +15,8 @@ file_path = os.path.abspath(os.path.dirname(__name__))
 
 
 
-### Админка ###
+# Админка===========================================================
+#===================================================================
 class DashboardView(AdminIndexView): 
 	@expose('/')
 	@roles_required('admin')
@@ -60,9 +61,6 @@ class AdminSkillView(ModelView):
 		thumbnail_size=(100, 100, True),
 	)}
 
-
-
-
 	column_labels = {
 		"name": "Навык",
 		"score": "Уровень",
@@ -78,7 +76,7 @@ class AdminSkillView(ModelView):
 		if not model.image:
 			return ""
 		
-		url = url_for('static', filename=os.path.join('images/', model.image))
+		url = url_for('static', filename=os.path.join('images/logo/', model.image))
 		if model.image.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
 			return Markup(f'<img src="{url}" width="35">')
 
@@ -97,11 +95,33 @@ class AdminSkillView(ModelView):
 		super(AdminSkillView, self).__init__(Skill, session, **kwargs)
 
 
+class AdminCategoryView(ModelView):
+
+	column_list = (Category.id, "name", "slug", )
+	column_editable_list = ("name", "slug", )
+	column_labels = {
+		"name": "Имя категории",
+		"slug": "URL",
+	}
+	column_searchable_list = ('name', )
+	edit_modal = True
+	create_modal = True
+
+	def create_form(self, obj=None):
+		return super().create_form(obj)
+
+	def edit_form(self, obj=None):
+		return super().edit_form(obj)
+
+	def __init__(self, session,  **kwargs):
+		super(AdminCategoryView, self).__init__(Category, session, **kwargs)
+
+
 class AdminPostView(ModelView):
 	form_extra_fields = {
-            'image_preview': ImageUploadField(
+		'image_preview': ImageUploadField(
 		'Изображение',
-		base_path=os.path.join(file_path, 'app/static/images/post_preview/'),
+		base_path=os.path.join(file_path, 'app/static/images/post/'),
 		max_size=(1500, 700, True),
 		thumbnail_size=(100, 100, True),
             )}
@@ -126,7 +146,7 @@ class AdminPostView(ModelView):
 		if not model.image_preview:
 			return ""
 
-		url = url_for('static', filename=os.path.join('images/post_preview/', model.image_preview))
+		url = url_for('static', filename=os.path.join('images/post/', model.image_preview))
 		if model.image_preview.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
 			return Markup(f'<img src="{url}" width="35">')
 
@@ -144,57 +164,30 @@ class AdminPostView(ModelView):
 		super(AdminPostView, self).__init__(Post, session, **kwargs)
 
 
-### Создать пост ###
-@app.route('/blog/create', methods=['GET', 'POST'])
-def create_post():
-	if request.method == 'POST':
-		title = request.form.get('title') # form также как и args - словарь, title=название поля из форм
-		body = request.form.get('body')
-		
-		# file = request.files['file'] # имя из формы
-		# file.save(os.path.join('app/static/images/post/', file.filename))
-		# image = file.filename # заносим имя файла в бд
+class AdminTagView(ModelView):
 
-		preview = request.files.get('preview')
-		preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
-		image_preview = preview.filename
+	column_list = ('id', "name", "slug", )
+	column_editable_list = ("name", "slug", )
+	column_labels = {
+		"name": "Имя категории",
+		"slug": "URL",
+	}
+	column_searchable_list = ('name', )
+	edit_modal = True
+	create_modal = True
 
-		try:
-			post = Post(title=title, body=body,  image_preview=image_preview)
-			db.session.add(post)
-			db.session.commit()
-		except:
-			print("Something wrong!")
-		return redirect(url_for('post_detail', slug=post.slug))
-		
-	form = PostForm()
-	return render_template('blog/create_post.html', form=form)
+	def create_form(self, obj=None):
+		return super().create_form(obj)
+
+	def edit_form(self, obj=None):
+		return super().edit_form(obj)
+
+	def __init__(self, session,  **kwargs):
+		super(AdminTagView, self).__init__(Tag, session, **kwargs)
 
 
-### Редактировать пост ###
-@app.route('/blog/<slug>/edit/', methods=['GET', 'POST'])
-def edit_post(slug):
-	post = Post.query.filter(Post.slug==slug).first()
-	
-	if request.method == "POST":
-		preview = request.files.get('preview')
-		if preview:
-			preview.save(os.path.join('app/static/images/post_preview/', preview.filename))
-			image_preview = preview.filename
-			post.image_preview = image_preview # переопределяем изображение на полученное
-
-			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
-			form.populate_obj(post,)# Заполняет атриб переданного объекта нов данными из полей формы.
-			db.session.commit()
-			return redirect(url_for('post_detail', slug=post.slug))
-		else:
-			form = PostForm(formdata=request.form, obj=post) 
-			form.populate_obj(post, )
-			db.session.commit()
-			return redirect(url_for('post_detail', slug=post.slug))
-
-	form = PostForm(obj=post)
-	return render_template('blog/edit_post.html', post=post, form=form)
+# Блог==============================================================
+#===================================================================
 
 
 ### Список постов ###
@@ -225,6 +218,23 @@ def blog():
 														recent_posts=recent_posts)
 
 
+### Обзор поста ###
+@app.route('/blog/post_detail/<slug>/')
+def post_detail(slug):
+	post = Post.query.filter(Post.slug == slug).first()
+	date = post.created.strftime("%d-%m-%Y  %H:%m %p")
+
+	context = {
+		'title': post.title,
+		'body': post.body,
+		'date': date,
+		'post': post,
+		'image_preview':post.image_preview,
+	}
+	title = post.title
+
+	return render_template('blog/post_detail.html', context=context, title=title)
+
 
 ### Посты по тегу ###
 @app.route('/blog/tag/<slug>/')
@@ -247,23 +257,62 @@ def posts_by_tag(slug):
 															recent_posts=recent_posts)
 
 
+### Создать пост ###
+@app.route('/blog/create', methods=['GET', 'POST'])
+def create_post():
+	if request.method == 'POST':
+		title = request.form.get('title') # form также как и args - словарь, title=название поля из форм
+		body = request.form.get('body')
+		
+		# file = request.files['file'] # имя из формы
+		# file.save(os.path.join('app/static/images/post/', file.filename))
+		# image = file.filename # заносим имя файла в бд
 
-### Обзор поста ###
-@app.route('/blog/post_detail/<slug>/')
-def post_detail(slug):
-	post = Post.query.filter(Post.slug == slug).first()
-	date = post.created.strftime("%d-%m-%Y  %H:%m %p")
+		preview = request.files.get('preview')
+		preview.save(os.path.join('app/static/images/post', preview.filename))
+		image_preview = preview.filename
 
-	context = {
-		'title': post.title,
-		'body': post.body,
-		'date': date,
-		'post': post,
-		'image_preview':post.image_preview,
-	}
-	title = post.title
+		try:
+			post = Post(title=title, body=body,  image_preview=image_preview)
+			db.session.add(post)
+			db.session.commit()
+		except:
+			print("Something wrong!")
+		return redirect(url_for('post_detail', slug=post.slug))
+		
+	form = PostForm()
+	return render_template('blog/create_post.html', form=form)
 
-	return render_template('blog/post_detail.html', context=context, title=title)
+
+### Редактировать пост ###
+@app.route('/blog/<slug>/edit/', methods=['GET', 'POST'])
+def edit_post(slug):
+	post = Post.query.filter(Post.slug==slug).first()
+	
+	if request.method == "POST":
+		preview = request.files.get('preview')
+		if preview:
+			preview.save(os.path.join('app/static/images/post', preview.filename))
+			image_preview = preview.filename
+			post.image_preview = image_preview # переопределяем изображение на полученное
+
+			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
+			form.populate_obj(post,)# Заполняет атриб переданного объекта нов данными из полей формы.
+			db.session.commit()
+			return redirect(url_for('post_detail', slug=post.slug))
+		else:
+			form = PostForm(formdata=request.form, obj=post) 
+			form.populate_obj(post, )
+			db.session.commit()
+			return redirect(url_for('post_detail', slug=post.slug))
+
+	form = PostForm(obj=post)
+	return render_template('blog/edit_post.html', post=post, form=form)
+
+
+
+# Резюме============================================================
+#===================================================================
 
 
 ### Список навыков ###
@@ -293,6 +342,30 @@ def contact():
 	return render_template('contact.html', form=form)
 
 
+### Register ###
+@app.route('/register', methods=["POST", "GET"])
+def register():
+	form = LoginForm()		
+	if request.method == "POST":
+		email = request.form.get("email")
+		username = request.form.get('username')
+		password = request.form.get("password")
+		password2 = request.form.get("password2")
+		if password != password2:
+			flash("Password are not equal")
+			return redirect(url_for('register'))
+
+		hash_pwd = generate_password_hash(password)
+		new_user = User(email=email, username=username, password=hash_pwd, active=True)
+		db.session.add(new_user)
+		db.session.commit()
+		flash('Register has been successfully.')
+		return redirect(url_for('login'))
+	
+	form = LoginForm()
+	return render_template('register.html', form=form)
+
+
 ### Log in ###
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -311,29 +384,6 @@ def login():
 	flash("Something wrong!", category="danger")			
 	form = LoginForm()
 	return render_template('login.html', form=form)
-
-
-### Register ###
-@app.route('/register', methods=["POST", "GET"])
-def register():
-	form = LoginForm()		
-	if request.method == "POST":
-		email = request.form.get("email")
-		password = request.form.get("password")
-		password2 = request.form.get("password2")
-		if password != password2:
-			flash("Password are not equal")
-			return redirect(url_for('register'))
-
-		hash_pwd = generate_password_hash(password)
-		new_user = User(email=email, password=hash_pwd, active=True)
-		db.session.add(new_user)
-		db.session.commit()
-		flash('Register has been successfully.')
-		return redirect(url_for('login'))
-	
-	form = LoginForm()
-	return render_template('register.html', form=form)
 
 
 ### Log out ###
