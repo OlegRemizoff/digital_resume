@@ -212,9 +212,10 @@ def blog():
 	pages = posts.paginate(page=page, per_page=3)
 	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
 	tags = Tag.query.all()
+	category = Category.query.all()
 	# print("\x1b[31;1m" + 'Tags' + "\x1b[0m", tags)
-	print(pages)
 	return render_template('blog/blog.html', posts=posts, pages=pages, tags=tags,
+														category=category,
 														recent_posts=recent_posts)
 
 
@@ -255,6 +256,29 @@ def posts_by_tag(slug):
 
 	return render_template('blog/posts_by_tag.html', tag=tag, pages=pages, tags=tags,
 															recent_posts=recent_posts)
+
+
+### Посты по категории  ###
+@app.route('/blog/category/<slug>/')
+def posts_by_category(slug):
+	page = request.args.get("page")
+	if page and page.isdigit():
+		page = int(page)
+	else:
+		page = 1
+
+	cat = Category.query.filter(Category.slug==slug).first() # получаем категорию
+	posts = cat.posts
+	pages = posts.paginate(page=page, per_page=1)
+
+	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
+	category = Category.query.all()
+	tags = Tag.query.all()
+	return render_template('blog/posts_by_category.html', category=category, posts=posts,
+																			pages=pages,
+																			tags=tags,
+																			recent_posts=recent_posts)
+
 
 
 ### Создать пост ###

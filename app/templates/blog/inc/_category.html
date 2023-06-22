@@ -5,21 +5,11 @@
     </div>
     <div class="sidebar-info">
         <ul>
+        {% for item in category %}
             <li>
-                <a href="#">national <span>69</span></a>
+            <a href="{{ url_for('posts_by_category', slug=item.slug) }}">{{ item.name }}<span>69</span></a>
             </li>
-            <li>
-                <a href="#">national <span>25</span></a>
-            </li>
-            <li>
-                <a href="#">sports <span>18</span></a>
-            </li>
-            <li>
-                <a href="#">megazine <span>37</span></a>
-            </li>
-            <li>
-                <a href="#">health <span>12</span></a>
-            </li>
+        {% endfor %}
         </ul>
     </div>
 </div>

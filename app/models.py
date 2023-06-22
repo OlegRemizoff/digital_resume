@@ -62,7 +62,7 @@ class Category(db.Model):
     id = db.Column(db.Integer,  primary_key=True)
     name = db.Column(db.String(100))
     slug = db.Column(db.String, unique=True)
-    posts = db.relationship('Post', backref='category', lazy=True)
+    posts = db.relationship('Post', backref='category', lazy='dynamic')
 
     def __init__(self, *args, **kwargs):
         super(Category, self).__init__(*args, **kwargs)
