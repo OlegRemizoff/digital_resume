@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect, flash, Markup
 from app.models import Skill, Post, Message, User, Tag, Category
 from app.forms import PostForm, ContactForm, LoginForm
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from flask_security import roles_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin import  AdminIndexView, expose
@@ -121,7 +121,7 @@ class AdminPostView(ModelView):
 	form_extra_fields = {
 		'image_preview': ImageUploadField(
 		'Изображение',
-		base_path=os.path.join(file_path, 'app/static/images/post/'),
+		base_path=os.path.join(file_path, f'app/static/images/post_preview/'),
 		max_size=(1500, 700, True),
 		thumbnail_size=(100, 100, True),
             )}
@@ -146,7 +146,7 @@ class AdminPostView(ModelView):
 		if not model.image_preview:
 			return ""
 
-		url = url_for('static', filename=os.path.join('images/post/', model.image_preview))
+		url = url_for('static', filename=os.path.join('images/post_preview/', model.image_preview))
 		if model.image_preview.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
 			return Markup(f'<img src="{url}" width="35">')
 
@@ -169,7 +169,7 @@ class AdminTagView(ModelView):
 	column_list = ('id', "name", "slug", )
 	column_editable_list = ("name", "slug", )
 	column_labels = {
-		"name": "Имя категории",
+		"name": "Тэг",
 		"slug": "URL",
 	}
 	column_searchable_list = ('name', )

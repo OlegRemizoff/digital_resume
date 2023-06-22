@@ -29,8 +29,8 @@ from app.views import *
 ### Flask-Admin ###
 admin = Admin(app, name='Resume', template_mode='bootstrap4', index_view=DashboardView(), endpoint='admin')
 admin.add_view(AdminSkillView(db.session, name="Навыки"))
-admin.add_view(AdminCategoryView(db.session, name="Категории"))
 admin.add_view(AdminPostView(db.session, name="Статьи"))
+admin.add_view(AdminCategoryView(db.session, name="Категории"))
 admin.add_view(AdminTagView(db.session, name="Тэги"))
 
 
