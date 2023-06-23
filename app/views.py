@@ -13,7 +13,12 @@ import os
 
 file_path = os.path.abspath(os.path.dirname(__name__))
 
+def get_user_image(model, file_data):
+	return f'{model.username}/{file_data.filename}'
 
+
+def get_post_image(model, file_data):
+	return f'{model.author.username}/{model.title}/{file_data.filename}'
 
 # Админка===========================================================
 #===================================================================
@@ -52,13 +57,64 @@ class DashboardView(AdminIndexView):
 	# 	return render_template('admin/message.html', message=message)
 
 
+
+
+class UserView(ModelView):
+
+	form_extra_fields = {
+	'image': ImageUploadField(
+		'',
+		base_path=os.path.join(file_path, 'app/static/images/user_img/'),
+		url_relative_path= 'images/user_img/',
+		namegen=get_user_image,
+		max_size=(500, 500, True),
+		# thumbnail_size=(100, 100, True),
+	)}
+
+	column_labels = {
+		'id': "id",
+		'username': 'имя',
+		'roles': 'роль',
+		'email': "почта",
+		'last_login_at': 'последний вход',
+		'image': 'изображение'
+	}
+	column_list = ['id', 'username', 'role', 'email', 'last_login_at', 'image']
+	
+	create_modal = True
+	edit_modal = True
+
+	def _list_thumbnail(view, context, model, name):
+		if not model.image:
+			return ""
+		
+		url = url_for('static', filename=os.path.join('images/user_img/', model.image))
+		if model.image.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
+			return Markup(f'<img src="{url}" width="35">')
+
+
+	column_formatters =  {
+		'image': _list_thumbnail	# передаем в поле image нашу функцию
+	}
+
+	def create_form(self, obj=None):
+		return super().create_form(obj)
+	
+	def edit_form(self, obj=None):
+		return super().edit_form(obj)
+
+
+	# def __init__(self, session,  **kwargs):
+	# 	super(UserView, self).__init__(User, session, **kwargs)
+		
+
 class AdminSkillView(ModelView):
 	form_extra_fields = {
 	'image': ImageUploadField(
 		'',
-		base_path=os.path.join(file_path, 'app/static/images/'),
-		max_size=(1280, 720, True),
-		thumbnail_size=(100, 100, True),
+		base_path=os.path.join(file_path, 'app/static/images/skills/'),
+		max_size=(32, 32, True),
+		# thumbnail_size=(100, 100, True),
 	)}
 
 	column_labels = {
@@ -76,9 +132,9 @@ class AdminSkillView(ModelView):
 		if not model.image:
 			return ""
 		
-		url = url_for('static', filename=os.path.join('images/logo/', model.image))
+		url = url_for('static', filename=os.path.join('images/skills/', model.image))
 		if model.image.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
-			return Markup(f'<img src="{url}" width="35">')
+			return Markup(f'<img src="{url}" width="32">')
 
 	column_formatters =  {
 		'image': _list_thumbnail	# передаем в поле image нашу функцию
@@ -122,9 +178,10 @@ class AdminPostView(ModelView):
 		'image_preview': ImageUploadField(
 		'Изображение',
 		base_path=os.path.join(file_path, f'app/static/images/post_preview/'),
+		namegen=get_post_image,
 		max_size=(1500, 700, True),
 		thumbnail_size=(100, 100, True),
-            )}
+        )}
 
 	column_list = (Post.id, "title", "slug", "body", "created", "image_preview", )
 	column_editable_list = ("title", "slug", )
@@ -278,7 +335,6 @@ def posts_by_category(slug):
 																			pages=pages,
 																			tags=tags,
 																			recent_posts=recent_posts)
-
 
 
 ### Создать пост ###

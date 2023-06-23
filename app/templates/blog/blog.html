@@ -52,10 +52,15 @@
                                     <div class="footer-meta">
                                         <ul>
                                             <li>
-                                                <img src="{{ url_for('static', filename='images/Joker_avatar.jpeg') }}"
+                                                {% if post.author.image %}
+                                                <img src="{{ url_for('static', filename='images/user_img/') + post.author.image }}"
                                                     alt="Author">
+                                                {% else %}
+                                                <img src="{{ url_for('static', filename='images/unknown.jpg') }}"
+                                                alt="Author">
                                                 <span>By </span>
                                                 <a href="#">Admin</a>
+                                                {% endif %}
                                             </li>
                                             <li>
                                                 <span>In </span>

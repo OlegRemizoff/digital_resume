@@ -28,17 +28,23 @@ from app.views import *
 
 ### Flask-Admin ###
 admin = Admin(app, name='Resume', template_mode='bootstrap4', index_view=DashboardView(), endpoint='admin')
+
 admin.add_view(AdminSkillView(db.session, name="Навыки"))
-admin.add_view(AdminPostView(db.session, name="Статьи"))
-admin.add_view(AdminCategoryView(db.session, name="Категории"))
-admin.add_view(AdminTagView(db.session, name="Тэги"))
+admin.add_view(AdminPostView(db.session, name="Статьи", category='Блог'))
+admin.add_view(AdminCategoryView(db.session, name="Категории", category='Блог'))
+admin.add_view(AdminTagView(db.session, name="Тэги", category='Блог'))
+
+admin.add_view(UserView(User, db.session, category='Пользователи',
+                         name="Пользователи", endpoint='user'))
+admin.add_view(ModelView(Role, db.session, category='Пользователи'
+                         , name="Роль", endpoint='role'))
 
 
-admin.add_view(ModelView(User, db.session, category="Пользователи",
-               name="Пользователи", endpoint='admin/user'))
+# admin.add_view(ModelView(User, db.session, category="Пользователи",
+#                name="Пользователи", endpoint='admin/user'))
 
-admin.add_view(ModelView(Role, db.session, name="Роль",
-               category="Пользователи", endpoint='admin/role'))
+# admin.add_view(ModelView(Role, db.session, name="Роль",
+#                category="Пользователи", endpoint='admin/role'))
 
 
 ### Flask-Security ###
