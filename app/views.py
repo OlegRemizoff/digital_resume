@@ -177,20 +177,23 @@ class AdminPostView(ModelView):
 	form_extra_fields = {
 		'image_preview': ImageUploadField(
 		'Изображение',
-		base_path=os.path.join(file_path, f'app/static/images/post_preview/'),
+		base_path=os.path.join(file_path, f'app/static/images/post/'),
 		namegen=get_post_image,
 		max_size=(1500, 700, True),
 		thumbnail_size=(100, 100, True),
         )}
 
-	column_list = (Post.id, "title", "slug", "body", "created", "image_preview", )
+	column_list = (Post.id, 'category.name', "title", "slug",
+		 					 "created", 'author.username', "image_preview", )
 	column_editable_list = ("title", "slug", )
 	form_excluded_columns = ["image"]
 	column_labels = {
 		"title": "Заголовок",
+		'category.name': 'Категория',
 		"slug": "URL",
 		"body": "Текст",
 		"created": "Дата создания",
+		'author.username': 'Автор',
 		"image_preview" : "Изображение",
 	}
 	column_sortable_list = ('id', "title", "created",)
@@ -203,7 +206,7 @@ class AdminPostView(ModelView):
 		if not model.image_preview:
 			return ""
 
-		url = url_for('static', filename=os.path.join('images/post_preview/', model.image_preview))
+		url = url_for('static', filename=os.path.join('images/post/', model.image_preview))
 		if model.image_preview.split('.')[-1] in ['jpg', 'jpeg', 'png', 'svg', 'gif']:
 			return Markup(f'<img src="{url}" width="35">')
 
@@ -343,21 +346,39 @@ def create_post():
 	if request.method == 'POST':
 		title = request.form.get('title') # form также как и args - словарь, title=название поля из форм
 		body = request.form.get('body')
+		category = request.form.get('category')
+		preview = request.files.get('preview')
+		user = current_user.id
 		
 		# file = request.files['file'] # имя из формы
 		# file.save(os.path.join('app/static/images/post/', file.filename))
 		# image = file.filename # заносим имя файла в бд
 
-		preview = request.files.get('preview')
-		preview.save(os.path.join('app/static/images/post', preview.filename))
-		image_preview = preview.filename
+		# preview = request.files.get('preview')
+		# preview.save(os.path.join('app/static/images/post', preview.filename))
+		# image_preview = preview.filename
 
+
+		path = f'app/static/images/post/{ current_user.username }/{title}/'
+		if not os.path.exists(path):
+			os.makedirs(path)
+			preview.save(os.path.join(path, preview.filename))
+		else:
+			preview.save(os.path.join(path, preview.filename))
+		# preview.save(os.path.join('app/static/images/post', preview.filename))
+		image_preview = preview.filename
+		# image_preview = f'{current_user.username}/{title}/{preview.filename}'
+		print(image_preview)
 		try:
-			post = Post(title=title, body=body,  image_preview=image_preview)
+			post = Post(title=title, body=body, user_id=user, 
+	       				category_id=category, image_preview=image_preview)
+			
 			db.session.add(post)
 			db.session.commit()
 		except:
 			print("Something wrong!")
+			return redirect(url_for('blog'))
+		
 		return redirect(url_for('post_detail', slug=post.slug))
 		
 	form = PostForm()

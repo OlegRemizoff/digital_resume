@@ -38,12 +38,13 @@
                             <div class="item">
                                 <div class="thumb">
                                     {% if post.image_preview %}
-                                    <img src="{{ url_for('static', filename='images/post_preview/') + post.image_preview }}" alt="..." class="pImg">
+                                    <img src="{{ url_for('static', filename='images/post/') + post.image_preview }}" alt="..." class="pImg">
                                     {% else %}
                                     <img src="{{ url_for('static', filename='blog/img/1500x700.png') }}" alt="Thumb">
                                     {% endif %}
 
                                     <div class="date">{{ post.get_date() }}</div>
+                                    
                                 </div>
                                 <div class="info">
                                     <h3>
@@ -58,13 +59,13 @@
                                                 {% else %}
                                                 <img src="{{ url_for('static', filename='images/unknown.jpg') }}"
                                                 alt="Author">
-                                                <span>By </span>
-                                                <a href="#">Admin</a>
                                                 {% endif %}
+                                                <span>By </span>
+                                                <a href="#">{{ post.author.username }}</a>
                                             </li>
                                             <li>
-                                                <span>In </span>
-                                                <a href="#">Digital</a>
+                                                <span>Категория </span>
+                                                <a href="#">{{ post.category.name }}</a>
                                             </li>
                                         </ul>
                                     </div>

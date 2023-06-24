@@ -35,7 +35,7 @@
                                 <!-- Start Post Thumb -->
                                 <div class="thumb">
                                     {% if context.image_preview %}
-                                    <img src="{{ url_for('static', filename='images/post_preview/') + context.image_preview }}" alt="Thumb" width="100%">
+                                    <img src="{{ url_for('static', filename='images/post/') + context.image_preview }}" alt="Thumb" width="100%">
                                     {% else %}
                                     <img src="{{ url_for('static', filename='blog/img/1500x700.png') }}" alt="Thumb" width="100%">
                                     {% endif %}
@@ -43,21 +43,25 @@
                                 <!-- Start Post Thumb -->
                                 <div class="info">
                                     <h3>{{ context.post.title }}</h3>
-
                                     <div class="footer-meta">
-                                       <ul>
-                                           <li>
-                                               <img src="{{ url_for('static', filename='images/Joker_avatar.jpeg') }}" alt="Author">
-                                               <span>By </span>
-                                               <a href="#">Admin</a>
-                                           </li>
-                                           <li>
-                                            <span>In </span>
-                                            <a href="#">Creative</a>
-                                        </li>
-                                           
+                                        <ul>
+                                            <li>
+                                                {% if context.post.author.image %}
+                                                <img src="{{ url_for('static', filename='images/user_img/') + context.post.author.image }}"
+                                                    alt="Author">
+                                                {% else %}
+                                                <img src="{{ url_for('static', filename='images/unknown.jpg') }}"
+                                                alt="Author">
+                                                {% endif %}
+                                                <span>By </span>
+                                                <a href="#">{{ context.post.author.username }}</a>
 
-                                       </ul>
+                                            </li>
+                                            <li>
+                                                <div>Категория </div>
+                                                <a href="#">{{ context.post.category.name }}</a>
+                                            </li>
+                                        </ul>
                                     </div>
                                     
                                     <p>
