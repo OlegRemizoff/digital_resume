@@ -8,7 +8,7 @@
 <body>
     <!-- Start Breadcrumb 
     ============================================= -->
-    <div class="breadcrumb-area bg-gray text-center shadow dark text-light bg-cover" style="background-image: url('/static/images/home-bg.jpg')" >
+    <div class="breadcrumb-area bg-gray text-center shadow dark text-light bg-cover" style="background-image: url('/static/images/other/home-bg.jpg')" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">
@@ -50,7 +50,7 @@
                                                 <img src="{{ url_for('static', filename='images/user_img/') + context.post.author.image }}"
                                                     alt="Author">
                                                 {% else %}
-                                                <img src="{{ url_for('static', filename='images/unknown.jpg') }}"
+                                                <img src="{{ url_for('static', filename='images/other/unknown.jpg') }}"
                                                 alt="Author">
                                                 {% endif %}
                                                 <span>By </span>

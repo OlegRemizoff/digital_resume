@@ -359,16 +359,15 @@ def create_post():
 		# image_preview = preview.filename
 
 
-		path = f'app/static/images/post/{ current_user.username }/{title}/'
-		if not os.path.exists(path):
-			os.makedirs(path)
-			preview.save(os.path.join(path, preview.filename))
-		else:
-			preview.save(os.path.join(path, preview.filename))
-		# preview.save(os.path.join('app/static/images/post', preview.filename))
-		image_preview = preview.filename
-		# image_preview = f'{current_user.username}/{title}/{preview.filename}'
-		print(image_preview)
+		path = f'app/static/images/post/{ current_user.username }/{title}'
+		if preview:
+			if not os.path.exists(path):
+				os.makedirs(path)
+				preview.save(os.path.join(path, preview.filename))
+			else:
+				preview.save(os.path.join(path, preview.filename))
+
+		image_preview = f'{current_user.username}/{title}/{preview.filename}'
 		try:
 			post = Post(title=title, body=body, user_id=user, 
 	       				category_id=category, image_preview=image_preview)
