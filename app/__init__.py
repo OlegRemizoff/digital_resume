@@ -5,17 +5,19 @@ from flask_migrate import Migrate
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_security import Security, SQLAlchemyUserDatastore
-
+from flask_ckeditor import CKEditor
 
 
 db = SQLAlchemy()
 migrate = Migrate()
+ckeditor = CKEditor()
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(BaseConfig)
     db.init_app(app)
+    ckeditor.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
 
     return app
