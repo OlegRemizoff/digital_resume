@@ -388,6 +388,7 @@ def create_post():
 @app.route('/blog/<slug>/edit/', methods=['GET', 'POST'])
 def edit_post(slug):
 	post = Post.query.filter(Post.slug==slug).first()
+	preview = request.files.get('preview')
 	category = post.category
 	path = f'app/static/images/post/{ current_user.username }/{post.title}'
 	
@@ -395,11 +396,18 @@ def edit_post(slug):
 	if request.method == "POST":
 		preview = request.files.get('preview')
 		if preview:
-			preview.save(os.path.join(path, preview.filename))
-			image_preview = preview.filename
+			if not os.path.exists(path):
+				os.makedirs(path)
+				preview.save(os.path.join(path, preview.filename))
+			else:
+				preview.save(os.path.join(path, preview.filename))
+
+			image_preview = f'{current_user.username}/{post.title}/{preview.filename}'
 			post.image_preview = image_preview # переопределяем изображение на полученное
+ 
 		
 			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
+			form.category.data = category
 			form.populate_obj(post)# Заполняет атриб переданного объекта нов данными из полей формы.
 			
 			db.session.commit()
