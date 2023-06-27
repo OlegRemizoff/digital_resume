@@ -388,25 +388,45 @@ def create_post():
 @app.route('/blog/<slug>/edit/', methods=['GET', 'POST'])
 def edit_post(slug):
 	post = Post.query.filter(Post.slug==slug).first()
+	category = post.category
+	path = f'app/static/images/post/{ current_user.username }/{post.title}'
 	
+
 	if request.method == "POST":
 		preview = request.files.get('preview')
 		if preview:
-			preview.save(os.path.join('app/static/images/post', preview.filename))
+			preview.save(os.path.join(path, preview.filename))
 			image_preview = preview.filename
 			post.image_preview = image_preview # переопределяем изображение на полученное
-
+		
 			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
-			form.populate_obj(post,)# Заполняет атриб переданного объекта нов данными из полей формы.
+			form.populate_obj(post)# Заполняет атриб переданного объекта нов данными из полей формы.
+			
 			db.session.commit()
 			return redirect(url_for('post_detail', slug=post.slug))
 		else:
-			form = PostForm(formdata=request.form, obj=post) 
-			form.populate_obj(post, )
+
+			form = PostForm(request.form, obj=post) 
+			form.category.data = category
+			# title = form.title.data 
+			# body = form.body.data 
+			form.populate_obj(post)
+
+			print(form.data)
+			# как должно выглядеть
+			# {'category': 'Category id: 1, Name: Другое', 'title': 'Пост для', 'body': 'BlaBl'}
+			# что приходит
+			# {'category': '1', 'title': 'Пост для', 'body': 'BlaBla'}
+
 			db.session.commit()
 			return redirect(url_for('post_detail', slug=post.slug))
 
+	
+
+
 	form = PostForm(obj=post)
+
+
 	return render_template('blog/edit_post.html', post=post, form=form)
 
 

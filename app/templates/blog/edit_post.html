@@ -25,7 +25,7 @@
                 <br>
             </div>
             <div class="thumb">
-              <img src="{{ url_for('static', filename='images/post_preview/') + post.image_preview }}"
+              <img src="{{ url_for('static', filename='images/post/') + post.image_preview }}"
                   alt="Thumb" style="width: 100px;">
           </div>
             <form action="{{ url_for('edit_post', slug=post.slug) }}" method="POST" enctype="multipart/form-data">
