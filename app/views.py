@@ -18,7 +18,7 @@ def get_user_image(model, file_data):
 
 
 def get_post_image(model, file_data):
-	return f'{model.author.username}/{model.title}/{file_data.filename}'
+	return f'{model.author.username}/{model.id}/{file_data.filename}'
 
 # Админка===========================================================
 #===================================================================
@@ -358,22 +358,27 @@ def create_post():
 		# preview.save(os.path.join('app/static/images/post', preview.filename))
 		# image_preview = preview.filename
 
-
-		path = f'app/static/images/post/{ current_user.username }/{title}'
-		if preview:
-			if not os.path.exists(path):
-				os.makedirs(path)
-				preview.save(os.path.join(path, preview.filename))
-			else:
-				preview.save(os.path.join(path, preview.filename))
-
-		image_preview = f'{current_user.username}/{title}/{preview.filename}'
 		try:
 			post = Post(title=title, body=body, user_id=user, 
-	       				category_id=category, image_preview=image_preview)
+	       				category_id=category, image_preview='')
 			
 			db.session.add(post)
 			db.session.commit()
+
+			path = f'app/static/images/post/{ current_user.username }/{post.id}'
+			if preview:
+				if not os.path.exists(path):
+					os.makedirs(path)
+					preview.save(os.path.join(path, preview.filename))
+				else:
+					preview.save(os.path.join(path, preview.filename))
+
+			image_preview = f'{current_user.username}/{post.id}/{preview.filename}'
+			post.image_preview = image_preview
+
+			db.session.add(post) # Повторно добавляем в бд post с изображением 
+			db.session.commit()  # т.к id поста не был  доступнен до первого commit() 
+			
 		except:
 			print("Something wrong!")
 			return redirect(url_for('blog'))
@@ -390,11 +395,10 @@ def edit_post(slug):
 	post = Post.query.filter(Post.slug==slug).first()
 	preview = request.files.get('preview')
 	category = post.category
-	path = f'app/static/images/post/{ current_user.username }/{post.title}'
+	path = f'app/static/images/post/{ current_user.username }/{post.id}'
 	
 
 	if request.method == "POST":
-		
 		preview = request.files.get('preview')
 		if preview:
 			if not os.path.exists(path):
@@ -403,13 +407,13 @@ def edit_post(slug):
 			else:
 				preview.save(os.path.join(path, preview.filename))
 
-			image_preview = f'{current_user.username}/{post.title}/{preview.filename}'
+			image_preview = f'{current_user.username}/{post.id}/{preview.filename}'
 			post.image_preview = image_preview # переопределяем изображение на полученное
  
 		
 			form = PostForm(formdata=request.form, obj=post) #obj - проверяет поля  на пустоту
 			form.category.data = category
-			form.populate_obj(post)# Заполняет атриб переданного объекта нов данными из полей формы.
+			form.populate_obj(post) # Заполняет атриб переданного объекта нов данными из полей формы.
 			
 			db.session.commit()
 			return redirect(url_for('post_detail', slug=post.slug))
