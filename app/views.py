@@ -394,6 +394,7 @@ def edit_post(slug):
 	
 
 	if request.method == "POST":
+		
 		preview = request.files.get('preview')
 		if preview:
 			if not os.path.exists(path):
