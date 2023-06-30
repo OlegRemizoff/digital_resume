@@ -17,6 +17,12 @@
                         <li><a href="{{ url_for('blog') }}"><i class="fas fa-home"></i> Home</a></li>
                         {% if current_user.username == context.post.author.username %}
                         <li><a href="{{ url_for('edit_post', slug=context.post.slug) }}"><i class="fas fa-keyboard"></i> </i>Edit post</a></li>
+                        <!-- <li><a href="{{ url_for('remove_post', slug=context.post.slug, id=context.post.id) }}"><i class="fas fa-trash"></i></i>Delete post</a></li> -->
+
+
+
+                        
+                        <li><i class="fas fa-trash"><button type="submit" id="trash" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden> DELETE POST</button></i></li><label style="margin-left: -20px;" for="trash">DELETE POST</label>
                         {% endif %}
                     </ul>
                 </div>
@@ -65,10 +71,14 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    
-                                    <p>
-                                        {{ context.post.body|safe }}
-                                    </p>
+                                    <br>
+
+                                    <div class="row">
+                                        <p>
+                                            {{ context.post.body|safe }}
+                                        </p>
+                                    </div>
+
  
                                     <!-- <blockquote>
                                         He share of first to worse. Weddings and any opinions suitable smallest nay. Houses or months settle remove ladies appear. Engrossed suffering supposing he recommend do eagerness. Commanded no of depending extremity recommend 
@@ -150,7 +160,7 @@
                                                     <textarea class="form-control" placeholder="Comment"></textarea>
                                                 </div>
                                                 <div class="form-group full-width submit">
-                                                    <button class="btn-animation dark border" type="submit">Post Comments <i class="arrow_right"></i></button>
+                                                    <button class="btn-animation dark border" type="submit" disabled="disabled">Отправить<i class="arrow_right"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -167,4 +177,28 @@
     </div>
     <!-- End Blog -->
 
+
+
+
+  
+<!-- Модальное окно -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Заголовок модального окна</h1> -->
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button> -->
+            </div>
+            <div class="modal-body">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Вы действительно хотите удалить пост?</h1>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <label for="del" class="btn btn-danger"><a href="{{ url_for('remove_post', slug=context.post.slug, id=context.post.id) }}"><i class="fas fa-trash"></i> Удалить</a></label>
+                <!-- <button type="submit" id="del" class="btn btn-danger"></button> -->
+                <input type="submit" name="" id="del" hidden>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

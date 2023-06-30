@@ -27,6 +27,22 @@
     ============================================= -->
 <div class="blog-area full-blog right-sidebar full-blog default-padding">
     <div class="container">
+        <div class="row">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="col-md-8">
+                <ul class="flashes">
+                {% for category, message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+                </div>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        {% endwith %}
+        </div>
         <div class="blog-items">
             <h4><a href="{{ url_for('create_post') }}"><i class="fas fa-keyboard"></i> </i>Create post</a></h4>
             <div class="row">

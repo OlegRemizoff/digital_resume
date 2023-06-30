@@ -10,6 +10,7 @@ from flask_admin.form.upload import ImageUploadField
 from sqlalchemy import desc
 from app import app, db
 import os
+import shutil
 
 file_path = os.path.abspath(os.path.dirname(__name__))
 
@@ -434,14 +435,24 @@ def edit_post(slug):
 			db.session.commit()
 			return redirect(url_for('post_detail', slug=post.slug))
 
-	
-
-
 	form = PostForm(obj=post)
-
-
 	return render_template('blog/edit_post.html', post=post, form=form)
 
+@app.route('/blog/remove/<slug>/<id>/', methods=['GET', 'POST'])
+def remove_post(slug, id):
+	try:
+		post = Post.query.filter(Post.id==id).first()
+		path = f'app/static/images/post/{ current_user.username }/{post.id}' # путь до img
+		if os.path.exists(path):
+			shutil.rmtree(path) # удаляем папку со всеми вложенными файлами
+
+		db.session.delete(post)
+		db.session.commit()
+		flash('Пост был успешно удален !')
+	except:
+		print("Somethin wrong!")
+		return redirect(url_for('post_detail', slug=post.slug))
+	return redirect(url_for('blog'))
 
 
 # Резюме============================================================
@@ -492,7 +503,6 @@ def register():
 		new_user = User(email=email, username=username, password=hash_pwd, active=True)
 		db.session.add(new_user)
 		db.session.commit()
-		flash('Register has been successfully.')
 		return redirect(url_for('login'))
 	
 	form = LoginForm()
@@ -511,10 +521,7 @@ def login():
 			user = User.query.filter_by(email=email).first()
 			if check_password_hash(user.password, password):
 				login_user(user)
-				flash('Logged in successfully.')
-				return redirect(url_for('index'))
-	
-	flash("Something wrong!", category="danger")			
+				return redirect(url_for('index'))			
 	form = LoginForm()
 	return render_template('login.html', form=form)
 
