@@ -19,7 +19,7 @@
                                 <div class="item">
                                     <div class="thumb">
                                         {% if post.image_preview %}
-                                        <img src="{{ url_for('static', filename='images/post_preview/') + post.image_preview }}" alt="..." class="pImg">
+                                        <img src="{{ url_for('static', filename='images/post/') + post.image_preview }}" alt="..." class="pImg">
                                         {% else %}
                                         <img src="{{ url_for('static', filename='blog/img/1500x700.png') }}" alt="Thumb">
                                         {% endif %}
@@ -33,10 +33,15 @@
                                         <div class="footer-meta">
                                             <ul>
                                                 <li>
-                                                    <img src="{{ url_for('static', filename='blog/img/100x100.png') }}"
+                                                    {% if post.author.image %}
+                                                    <img src="{{ url_for('static', filename='images/user_img/') + post.author.image }}"
                                                         alt="Author">
+                                                    {% else %}
+                                                    <img src="{{ url_for('static', filename='images/other/unknown.jpg') }}"
+                                                    alt="Author">
+                                                    {% endif %}
                                                     <span>By </span>
-                                                    <a href="#">Admin</a>
+                                                    <a href="#">{{ post.author.username }}</a>
                                                 </li>
                                                 <li>
                                                     <span>In </span>

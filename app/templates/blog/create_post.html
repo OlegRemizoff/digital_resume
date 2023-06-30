@@ -44,7 +44,13 @@
                     <input class="form-control" type="file" name="file" id="formFile">
                   </div> -->
                   <!-- <button type="submit" class="btn circle btn-theme border btn-sm" style="margin-top: 5px;">Опубликовать</button> -->
-                  <button class="btn-animation dark border" type="submit" style="margin-top: 20px;">Опубликовать<i class="arrow_right"></i></button>
+                  {% if user_unauthorized %}
+                    <button class="btn-animation dark border" type="submit" style="margin-top: 20px;">Опубликовать<i class="arrow_right"></i></button>
+                  {% else %}
+                  <p>Только для авторизованных пользователей</p>
+                  <button class="btn-animation dark border" disabled="disabled" style="margin-top: 20px;">Опубликовать<i class="arrow_right"></i></button>
+                  {% endif %}
+
                 </div>
               </form>
 
