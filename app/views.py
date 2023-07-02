@@ -184,14 +184,13 @@ class AdminPostView(ModelView):
 		thumbnail_size=(100, 100, True),
         )}
 
-	column_list = (Post.id, 'category.name', "title", "slug",
+	column_list = (Post.id, 'category.name', "title",
 		 					 "created", 'author.username', "image_preview", )
-	column_editable_list = ("title", "slug", )
+	column_editable_list = ("title", )
 	form_excluded_columns = ["image"]
 	column_labels = {
 		"title": "Заголовок",
 		'category.name': 'Категория',
-		"slug": "URL",
 		"body": "Текст",
 		"created": "Дата создания",
 		'author.username': 'Автор',
@@ -270,7 +269,7 @@ def blog():
 
 	# print(request.endpoint)
 
-	pages = posts.paginate(page=page, per_page=3)
+	pages = posts.paginate(page=page, per_page=5)
 	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
 	tags = Tag.query.all()
 	category = Category.query.all()
@@ -310,7 +309,7 @@ def posts_by_tag(slug):
 
 	tag = Tag.query.filter(Tag.slug==slug).first() # находим тег по слагу и получим связаные  посты
 	posts = tag.post # .all() # благодоря backref tag получает поле post [post1, post9, ...]
-	pages = posts.paginate(page=page, per_page=1)
+	pages = posts.paginate(page=page, per_page=5)
 
 	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
 	tags = Tag.query.all()
@@ -330,7 +329,7 @@ def posts_by_category(slug):
 
 	cat = Category.query.filter(Category.slug==slug).first() # получаем категорию
 	posts = cat.posts
-	pages = posts.paginate(page=page, per_page=1)
+	pages = posts.paginate(page=page, per_page=5)
 
 	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
 	category = Category.query.all()

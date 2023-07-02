@@ -6,9 +6,11 @@
     <div class="sidebar-info">
         <ul>
         {% for item in category %}
+        {% if item.posts.count() > 0 %} 
             <li>
-            <a href="{{ url_for('posts_by_category', slug=item.slug) }}">{{ item.name }}<span>69</span></a>
+            <a href="{{ url_for('posts_by_category', slug=item.slug) }}">{{ item.name }}<span>{{ item.posts.count() }}</span></a>
             </li>
+        {% endif %}
         {% endfor %}
         </ul>
     </div>
