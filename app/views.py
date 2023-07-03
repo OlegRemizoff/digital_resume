@@ -254,28 +254,33 @@ class AdminTagView(ModelView):
 @app.route('/blog/')
 def blog():
 	q = request.args.get('q')  # ?somethig (q, page) - попадает в args
-
-	page = request.args.get("page")
+	order = request.args.get('order')
+	page = request.args.get("page", '1')
 	if page and page.isdigit():
 		page = int(page)
-	else:
-		page = 1
+
 
 	if q:
 		posts = Post.query.filter(Post.title.contains(
 			q) | Post.body.contains(q))  # .all()
 	else:
-		posts = Post.query  # .all()
-
+		if not order:
+			posts = Post.query # .all()
+		elif order == '-date':
+			posts = Post.query.order_by(Post.created)  
+		else:
+			posts = Post.query.order_by(desc(Post.created))
 	# print(request.endpoint)
+
+
 
 	pages = posts.paginate(page=page, per_page=5)
 	recent_posts = Post.query.order_by(desc(Post.created)).limit(3).all()
 	tags = Tag.query.all()
 	category = Category.query.all()
-	# print("\x1b[31;1m" + 'Tags' + "\x1b[0m", tags)
+	print("\x1b[31;1m" + 'Order' + "\x1b[0m", order)
 	return render_template('blog/blog.html', posts=posts, pages=pages, tags=tags,
-														category=category,
+														category=category, order=order,
 														recent_posts=recent_posts)
 
 

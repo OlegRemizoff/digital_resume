@@ -106,8 +106,11 @@
                                     {% endif %}
                                     {% for page in pages.iter_pages() %}
                                     
+                                    {% if order %}
+                                    <li {% if page == pages.page %} class="page-item active" {% endif %}><a class="page-link" href="./?order={{ order }}&page={{ page }}">{{ page }}</a></li>
+                                    {% else %}
                                     <li {% if page == pages.page %} class="page-item active" {% endif %}><a class="page-link" href="./?page={{ page }}">{{ page }}</a></li>
-
+                                    {% endif %}
                                     <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
                                     <li class="page-item"><a class="page-link" href="#">3</a></li> -->
                                     {% endfor %}
@@ -125,6 +128,24 @@
                 <div class="sidebar col-lg-4 col-md-12">
                     <!-- <a href="{{ url_for('create_post') }}"><i class="fas fa-keyboard"></i> </i>Create post</a> -->
                     <aside>
+                        <div class="sidebar-item recent-post" style="margin-bottom: -30px;">
+                            <form action="#" method="GET" id="sorted-form">
+                                <div class="input-group mb-4">
+                                    <label class="input-group-text" for="input-sort">Сортировка:</label>
+                                    <select name="order" class="form-select" id="input-sort">
+                                        <option value="id">По умолчанию</option>
+                                        <option value="date">Сначала новые &#8593;</option>
+                                        <option value="-date">Сначала старые &#8595;</option>
+                                        <input type="submit" value="Отправить" hidden>
+                                </div>
+                            </form>
+                            <!-- Выбираем select без кнопки -->
+                            <script>
+                                document.getElementById('input-sort').addEventListener('change', function() {
+                                document.getElementById('sorted-form').submit();
+                                });
+                            </script>
+                        </div>
                         {% include 'blog/inc/_search.html' %}
                         {% include 'blog/inc/_recent.html' %}
                         {% include 'blog/inc/_category.html' %}
